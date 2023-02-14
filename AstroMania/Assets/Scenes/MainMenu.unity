@@ -10792,7 +10792,7 @@ GameObject:
   - component: {fileID: 1423416094}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -12246,6 +12246,7 @@ MonoBehaviour:
   - {fileID: 1183732948}
   _startMenu: {fileID: 5622744970580760630, guid: 63ce7094bbb8c574298fd36a01cb3fbe,
     type: 3}
+  _particleSystem: {fileID: 519047165}
 --- !u!4 &1683669577
 Transform:
   m_ObjectHideFlags: 0

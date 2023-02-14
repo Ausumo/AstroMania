@@ -33,6 +33,7 @@ public class PauseManager : MonoBehaviour
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
                 _isPaused = false;
+                Time.timeScale = 0f;
             }
             else
             {
@@ -42,6 +43,7 @@ public class PauseManager : MonoBehaviour
                 _isPaused = true;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
+                Time.timeScale = 1f;
             }
         }
     }

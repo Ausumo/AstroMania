@@ -17,10 +17,16 @@ public class MenuManager : MonoBehaviour
     [Header("InputActions")]
     [SerializeField] private InputActionReference _startMenu;
 
+    [SerializeField]
+    private ParticleSystem _particleSystem;
+
     void Start()
     {
+        _particleSystem.Play();
+
         if (_isPlayMode)
         {
+
             //LoadOptions
             GameManager.Instance.LoadOptions();
                 
