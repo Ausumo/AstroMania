@@ -1036,11 +1036,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4d01f075d465df24ab0c3c78c12bac92, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _walkSpeed: 8
+  _walkSpeed: 7
   _playerHeight: 1.5
   isGrounded: 0
   _jumpSpeed: 400
-  _airSpeed: 8
+  _airSpeed: 7
   _movement: {fileID: -5128233630667868057, guid: 7f3f3ee5b8678b5488c4677f7ad3d8cc,
     type: 3}
   _jump: {fileID: 7768914616890611171, guid: 7f3f3ee5b8678b5488c4677f7ad3d8cc, type: 3}

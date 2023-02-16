@@ -28,21 +28,25 @@ public class PauseManager : MonoBehaviour
 
         if (isPauseKeyPressed)
         {
-            if (!_isPaused && !_isDead)
+            
+            if(!_isDead)
             {
-                //Pause Menu aus machen
+                if (!_isPaused)
+                {
+                    //Pause Menu aus machen
 
-                SetMenu(0);
-                TimeOff();
-                _isPaused = true;
-            }
-            else
-            {
-                //Pause Menu an machen
+                    SetMenu(0);
+                    TimeOff();
+                    _isPaused = true;
+                }
+                else
+                {
+                    //Pause Menu an machen
 
-                DeactivateAllMenus();
-                TimeOn();
-                _isPaused = false;
+                    DeactivateAllMenus();
+                    TimeOn();
+                    _isPaused = false;
+                }
             }
         }
     }
