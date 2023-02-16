@@ -7,6 +7,7 @@ using TMPro;
 using Newtonsoft.Json;
 using System.IO;
 using UnityEngine.Playables;
+using UnityEngine.Rendering;
 
 public class OptionsMenu : MonoBehaviour
 {

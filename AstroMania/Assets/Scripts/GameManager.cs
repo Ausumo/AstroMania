@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.Rendering;
 
 public class GameManager : MonoBehaviour
 {
@@ -21,6 +22,10 @@ public class GameManager : MonoBehaviour
             return _instance;
         }
     }
+
+    //VolumeProfile
+    [SerializeField]
+    private VolumeProfile _postProcess;
 
     #region Save and Load Options
     /// <summary>
