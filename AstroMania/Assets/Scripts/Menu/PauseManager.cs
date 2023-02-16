@@ -13,6 +13,7 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private InputActionReference _pauseKey;
 
     private bool _isPaused;
+    private bool _isDead;
 
     private void Update()
     {
@@ -21,29 +22,27 @@ public class PauseManager : MonoBehaviour
 
     public void MakePause()
     {
+        _isDead = FindObjectOfType<RespiratorySystem>().GetComponent<RespiratorySystem>()._isDead;
+
         bool isPauseKeyPressed = _pauseKey.action.triggered;
 
         if (isPauseKeyPressed)
         {
-            if (!_isPaused)
+            if (!_isPaused && !_isDead)
             {
                 //Pause Menu aus machen
 
                 SetMenu(0);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
+                TimeOff();
                 _isPaused = true;
-                Time.timeScale = 0f;
             }
             else
             {
                 //Pause Menu an machen
 
                 DeactivateAllMenus();
+                TimeOn();
                 _isPaused = false;
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-                Time.timeScale = 1f;
             }
         }
     }
@@ -78,10 +77,8 @@ public class PauseManager : MonoBehaviour
 
     public void DeactivateAllMenus()
     {
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+        TimeOn();
         _isPaused = false;
-        Time.timeScale = 1f;
 
         for (int i = 0; i < _menuList.Count; i++)
         {
@@ -90,7 +87,25 @@ public class PauseManager : MonoBehaviour
     }
     #endregion
 
+    public void DeactivatePause()
+    {
+        _isPaused = false;
+        TimeOn();
+    }
 
+    private void TimeOn()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1f;
+    }
+
+    private void TimeOff()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
+    }
 
     //InputActions Aktivieren und Deaktivieren
     private void OnEnable()

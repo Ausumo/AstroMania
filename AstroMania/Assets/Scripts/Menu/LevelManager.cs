@@ -12,7 +12,12 @@ public class LevelManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if(!_isOnTesting)
+        //Bei jedem Start der Scene den Cursor verstecken
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1f;
+
+        if (!_isOnTesting)
             _audioManager = GameObject.FindGameObjectWithTag("AudioManager").gameObject.GetComponent<AudioManager>();
     }
 
@@ -26,5 +31,11 @@ public class LevelManager : MonoBehaviour
     {
         if (!_isOnTesting)
             _audioManager.PlayMusic(musicName);
+    }
+
+    public void StopMusic(string musicName)
+    {
+        if (!_isOnTesting)
+            _audioManager.StopMusic(musicName);
     }
 }

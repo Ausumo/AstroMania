@@ -5,22 +5,6 @@ using UnityEngine.UI;
 
 public class RespiratorySystem : MonoBehaviour
 {
-    //Instance
-    private static RespiratorySystem _instance;
-    public static RespiratorySystem Instance
-    {
-        get
-        {
-            if (_instance == null)
-            {
-                _instance = FindObjectOfType<RespiratorySystem>();
-                DontDestroyOnLoad(_instance.gameObject);
-            }
-
-            return _instance;
-        }
-    }
-
     public int lungVolume;
     [SerializeField]
     private int _maxLungVolume = 100;
@@ -30,9 +14,41 @@ public class RespiratorySystem : MonoBehaviour
     [SerializeField]
     private Slider _playerLungSlider;
 
+    [SerializeField]
+    private Menu _deadScreen;
+
+    [HideInInspector]
+    public bool _isDead;
+
     private void Start()
     {
+        ResetLungVolume();
         StartCoroutine(RemoveLungVolume());
+    }
+
+    private void Update()
+    {
+        if (lungVolume == 30)
+        {
+            //Freeze Screen Updaten -> Wenn zeit bleibt
+            print("Noch 30 Prozent");
+        }
+        else if (lungVolume == 0)
+        {
+            Dead();
+        }
+    }
+
+    private void Dead()
+    {
+        gameObject.GetComponent<Rigidbody>().freezeRotation = false;
+
+        _deadScreen.gameObject.SetActive(true);
+        _isDead = true;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        Time.timeScale = 0f;
     }
 
     /// <summary>

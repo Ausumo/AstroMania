@@ -49,6 +49,7 @@ MonoBehaviour:
   _isOnLager: 0
   _playerTag: Player
   _rocketFuel: 0
+  _maxRocketFuel: 50
   _interact: {fileID: -5699562860069404384, guid: 7f3f3ee5b8678b5488c4677f7ad3d8cc,
     type: 3}
   _lagerPanel: {fileID: 0}

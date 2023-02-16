@@ -13,6 +13,11 @@ public class FuelSystem : MonoBehaviour
     [SerializeField]
     private Slider _playerFuelSlider;
 
+    private void Start()
+    {
+        ResetPlayerFuel();
+    }
+
     /// <summary>
     /// Update the Player Fuel Slider
     /// </summary>

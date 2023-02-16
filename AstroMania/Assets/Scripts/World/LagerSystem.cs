@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
@@ -9,7 +10,9 @@ public class LagerSystem : MonoBehaviour
     [SerializeField] private bool _isInteract;
     [SerializeField] private bool _isOnLager;
     [SerializeField] private string _playerTag;
+
     [SerializeField] private int _rocketFuel;
+    [SerializeField] private int _maxRocketFuel = 50;
 
     private GameObject _playerGO;
 
@@ -31,6 +34,7 @@ public class LagerSystem : MonoBehaviour
     private void Start()
     {
         _lagerPanel.SetActive(false);
+        ResetRocketFuel();
     }
 
     private void Update()
@@ -55,7 +59,7 @@ public class LagerSystem : MonoBehaviour
         }
     }
 
-    private void OnTriggerEnter(Collider collision)
+    private void OnTriggerStay(Collider collision)
     {
         if(collision.gameObject.tag == _playerTag)
         {
@@ -84,7 +88,7 @@ public class LagerSystem : MonoBehaviour
             _lagerPanel.GetComponent<Menu>().SelectFirstButton();
 
             //Resetet die Lunge bzw. befüllt die Luftflaschen wieder
-            RespiratorySystem.Instance.ResetLungVolume();
+            _playerGO.GetComponent<RespiratorySystem>().ResetLungVolume();
 
             //Lager Panel aktiv
             _lagerPanel.SetActive(true);
@@ -130,7 +134,7 @@ public class LagerSystem : MonoBehaviour
         _playerGO.GetComponent<FuelSystem>().ResetPlayerFuel();
     }
 
-    private void UpdatePlayerFuelSlider()
+    private void UpdateRocketFuelSlider()
     {
         _rocketFuelSlider.value = _rocketFuel;
     }
@@ -142,8 +146,15 @@ public class LagerSystem : MonoBehaviour
     private void AddRocketFuel(int playerFuel)
     {
         this._rocketFuel += playerFuel;
-        UpdatePlayerFuelSlider();
+        UpdateRocketFuelSlider();
     }
+
+    private void ResetRocketFuel()
+    {
+        _rocketFuel = 0;
+        UpdateRocketFuelSlider();
+    }
+
 
     /// <summary>
     /// Interactions Enable and Disable

@@ -20,9 +20,17 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private ParticleSystem _particleSystem;
 
+    [SerializeField]
+    private AudioManager _audioManager;
+
     void Start()
     {
         _particleSystem.Play();
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        Time.timeScale = 1f;
+
 
         if (_isPlayMode)
         {
@@ -63,6 +71,15 @@ public class MenuManager : MonoBehaviour
             _activeMenu.SelectFirstButton();
             SyncMenus();
         }
+    }
+
+    /// <summary>
+    /// Music wechsel wenn der Spieler ein Game betrettet
+    /// </summary>
+    public void StartAGame()
+    {
+        _audioManager.StopMusic("Theme");
+        _audioManager.PlayMusic("BackgroundMusic");
     }
 
     /// <summary>
