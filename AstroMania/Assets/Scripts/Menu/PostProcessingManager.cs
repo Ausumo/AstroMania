@@ -21,11 +21,11 @@ public class PostProcessingManager : MonoBehaviour
         }
     }
 
-    private VolumeProfile _volumeProfile;
+    private Volume _volumeProfile;
 
     private void Start()
     {
-        _volumeProfile = gameObject.GetComponent<VolumeProfile>();
+        _volumeProfile = gameObject.GetComponent<Volume>();
     }
 
     public int SetGraphics(int setting)

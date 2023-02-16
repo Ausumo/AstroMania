@@ -4,7 +4,6 @@ using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using Newtonsoft.Json;
 using System.IO;
 using UnityEngine.Playables;
 using UnityEngine.Rendering;
