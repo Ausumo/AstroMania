@@ -27,11 +27,4 @@ public class LevelManager : MonoBehaviour
         if (!_isOnTesting)
             _audioManager.PlayMusic(musicName);
     }
-
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }

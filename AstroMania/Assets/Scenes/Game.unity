@@ -432,10 +432,35 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5423366603275437011, guid: d7f9ade54bcd8f94b982905d0debe873,
+        type: 3}
+      propertyPath: m_Drag
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423366603275437011, guid: d7f9ade54bcd8f94b982905d0debe873,
+        type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5423366603275437013, guid: d7f9ade54bcd8f94b982905d0debe873,
         type: 3}
       propertyPath: m_Name
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423366603275437020, guid: d7f9ade54bcd8f94b982905d0debe873,
+        type: 3}
+      propertyPath: _airSpeed
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423366603275437020, guid: d7f9ade54bcd8f94b982905d0debe873,
+        type: 3}
+      propertyPath: _jumpSpeed
+      value: 400
+      objectReference: {fileID: 0}
+    - target: {fileID: 5423366603275437020, guid: d7f9ade54bcd8f94b982905d0debe873,
+        type: 3}
+      propertyPath: _walkSpeed
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 6276248047560474180, guid: d7f9ade54bcd8f94b982905d0debe873,
         type: 3}
@@ -539,8 +564,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 1}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -4.9933, y: 0}
+  m_SizeDelta: {x: 0.0134, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &208352741
 MonoBehaviour:
@@ -2017,7 +2042,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 731994348}
-  m_LocalRotation: {x: 0.16018225, y: 0.000000023309845, z: -0.000000003782667, w: 0.9870875}
+  m_LocalRotation: {x: 0.16018225, y: 0.000000021535106, z: -0.000000003494667, w: 0.9870875}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2095,7 +2120,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 763010367}
-  m_LocalRotation: {x: 0.114129744, y: -0.0000000042734887, z: 4.9094e-10, w: 0.9934659}
+  m_LocalRotation: {x: 0.11412975, y: -1e-45, z: -0, w: 0.9934659}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2434,7 +2459,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 868744610}
-  m_LocalRotation: {x: 0.059241123, y: -1e-45, z: -0, w: 0.9982437}
+  m_LocalRotation: {x: 0.05924112, y: 1e-45, z: -0, w: 0.9982437}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -2819,7 +2844,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1007816128}
-  m_LocalRotation: {x: 0.059241123, y: -0, z: -0, w: 0.99824375}
+  m_LocalRotation: {x: 0.05924112, y: -0, z: -0, w: 0.99824375}
   m_LocalPosition: {x: 0.7845089, y: 2.8730001, z: -5.6986904}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -4021,8 +4046,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 10, y: 0}
+  m_AnchoredPosition: {x: -4.824997, y: 0}
+  m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1402333566
 MonoBehaviour:
@@ -4270,8 +4295,8 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.25}
   m_AnchorMax: {x: 1, y: 0.75}
-  m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_AnchoredPosition: {x: -4.683098, y: 0}
+  m_SizeDelta: {x: -9.3663, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1563303762
 MonoBehaviour:
@@ -5102,7 +5127,7 @@ MonoBehaviour:
   m_MinValue: 0
   m_MaxValue: 100
   m_WholeNumbers: 0
-  m_Value: 69.9
+  m_Value: 100
   m_OnValueChanged:
     m_PersistentCalls:
       m_Calls: []

@@ -25,14 +25,14 @@ public class PauseManager : MonoBehaviour
 
         if (isPauseKeyPressed)
         {
-            if (_isPaused)
+            if (!_isPaused)
             {
                 //Pause Menu aus machen
 
                 SetMenu(0);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                _isPaused = false;
+                _isPaused = true;
                 Time.timeScale = 0f;
             }
             else
@@ -40,7 +40,7 @@ public class PauseManager : MonoBehaviour
                 //Pause Menu an machen
 
                 DeactivateAllMenus();
-                _isPaused = true;
+                _isPaused = false;
                 Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 Time.timeScale = 1f;
@@ -78,6 +78,11 @@ public class PauseManager : MonoBehaviour
 
     public void DeactivateAllMenus()
     {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        _isPaused = false;
+        Time.timeScale = 1f;
+
         for (int i = 0; i < _menuList.Count; i++)
         {
             _menuList[i].gameObject.SetActive(false);

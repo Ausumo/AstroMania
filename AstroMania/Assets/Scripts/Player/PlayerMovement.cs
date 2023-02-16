@@ -11,20 +11,21 @@ public class PlayerMovement : MonoBehaviour
 {
     [Header("Movement")]
     [SerializeField] private float _walkSpeed;
-    [SerializeField] private float _maxSpeed;
 
     [Header("GroundCheck")]
     [SerializeField] private float _playerHeight;
-    private bool _isGrounded;
+    public bool isGrounded;
 
     [Header("Jump")]
     [SerializeField] private float _jumpSpeed;
+
+    [Header("AirSpeed")]
+    [SerializeField] private float _airSpeed;
 
     private float _speed;
     private Vector3 _move;
     private Rigidbody _rb;
     private Vector3 _moveDirection;
-    [SerializeField] private Transform _orientation;
 
     [Header("InputActions")]
     [SerializeField] private InputActionReference _movement;
@@ -33,6 +34,7 @@ public class PlayerMovement : MonoBehaviour
     [Header("Animator")]
     [SerializeField] private Animator _animator;
 
+    private Vector3 _direction;
 
     private void Start()
     {
@@ -41,8 +43,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.DrawRay(transform.position, _moveDirection.normalized * 4, Color.green);
-        
         InputMove();
         Jump();
 
@@ -50,12 +50,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void FixedUpdate()
     {
-        Vector3 dir = transform.position - Camera.main.transform.position;
-        dir.y = 0;
-        Vector3 forward = Quaternion.LookRotation(dir) * Vector3.forward;
-        Vector3 right = Quaternion.LookRotation(dir) * Vector3.right;
-
-        _moveDirection = /*_orientation.*/ forward * _move.z + /*_orientation.*/ right * _move.x;
+        FindDirection();
         Move();
     }
 
@@ -69,7 +64,20 @@ public class PlayerMovement : MonoBehaviour
         if (IsGrounded())
         {
             _speed = _walkSpeed;
-        }     
+        }
+    }
+
+    /// <summary>
+    /// Methode die die Direction der Camera findet und dem Spieler gibt
+    /// </summary>
+    private void FindDirection()
+    {
+        _direction = transform.position - Camera.main.transform.position;
+
+        _direction.y = 0;
+        _direction = _direction.normalized;
+
+        _moveDirection = _direction * _move.z + ((Quaternion.AngleAxis(90, Vector3.up) * _direction) * _move.x);
     }
 
     /// <summary>
@@ -77,9 +85,29 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Move()
     {
-        _rb.AddForce(_speed * _moveDirection.normalized, ForceMode.Force);
-        //transform.position += _moveDirection.normalized * 0.1f;
-        _rb.velocity = new Vector3(Mathf.Clamp(_rb.velocity.x, -_maxSpeed, _maxSpeed), _rb.velocity.y, Mathf.Clamp(_rb.velocity.z, -_maxSpeed, _maxSpeed));
+        if (isGrounded)
+        {
+            var _rbvelocityY = _rb.velocity.y;
+            var _directionVec = _speed * _moveDirection.normalized;
+
+            _directionVec.y = _rbvelocityY;
+            _rb.velocity = _directionVec;
+        }
+        else
+        {
+            var _rbvelocity = _rb.velocity;
+            var _rbvelocityY = _rb.velocity.y;
+
+            _rbvelocity.y = 0;
+            _rbvelocity += _speed * _moveDirection.normalized * 0.02f;
+            float _rbSpeed = _rbvelocity.magnitude;
+
+            if (_rbSpeed < _airSpeed)
+            {
+                _rbvelocity.y = _rbvelocityY;
+                _rb.velocity = _rbvelocity;
+            }
+        }
     }
 
     /// <summary>
@@ -87,7 +115,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void Jump()
     {
-        if (IsGrounded()) 
+        if (IsGrounded())
         {
             bool isJumping = _jump.action.triggered;
 
@@ -104,8 +132,8 @@ public class PlayerMovement : MonoBehaviour
     /// <returns></returns>
     private bool IsGrounded()
     {
-        _isGrounded = Physics.Raycast(transform.position, Vector3.down, (float)_playerHeight);
-        return _isGrounded;
+        isGrounded = Physics.Raycast(transform.position, Vector3.down, (float)_playerHeight);
+        return isGrounded;
     }
 
     /// <summary>
@@ -113,7 +141,7 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void ManageAnimation()
     {
-        if(_isGrounded)
+        if (isGrounded)
         {
             _animator.SetBool("isJumping", false);
 
@@ -133,6 +161,11 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.green;
+        Gizmos.DrawLine(transform.position, transform.position + (_moveDirection * 4));
+    }
 
     //InputActions Aktivieren und Deaktivieren
     private void OnEnable()
