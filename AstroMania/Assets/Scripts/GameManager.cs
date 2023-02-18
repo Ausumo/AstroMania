@@ -23,10 +23,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    //VolumeProfile
-    [SerializeField]
-    private VolumeProfile _postProcess;
-
     #region Save and Load Options
     /// <summary>
     /// Speichert alle Werte des OptionsMenu
@@ -36,6 +32,7 @@ public class GameManager : MonoBehaviour
         PlayerPrefs.SetFloat("MasterVolume", AudioManager.Instance.masterVolume);
         PlayerPrefs.SetFloat("MusicVolume", AudioManager.Instance.musicVolume);
         PlayerPrefs.SetFloat("SoundVolume", AudioManager.Instance.soundsVolume);
+        PlayerPrefs.SetInt("GraphicSettings", PostProcessingManager.Instance.graphicSettings);
 
         PlayerPrefs.Save();
     }
@@ -48,8 +45,10 @@ public class GameManager : MonoBehaviour
         AudioManager.Instance.masterVolume = PlayerPrefs.GetFloat("MasterVolume");
         AudioManager.Instance.musicVolume = PlayerPrefs.GetFloat("MusicVolume");
         AudioManager.Instance.soundsVolume = PlayerPrefs.GetFloat("SoundVolume");
+        PostProcessingManager.Instance.graphicSettings = PlayerPrefs.GetInt("GraphicSettings");
 
         AudioManager.Instance.SetVolumes();
+        PostProcessingManager.Instance.SetGraphics();
     }
     #endregion
 

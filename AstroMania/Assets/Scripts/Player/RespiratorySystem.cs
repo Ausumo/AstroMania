@@ -20,6 +20,8 @@ public class RespiratorySystem : MonoBehaviour
     [HideInInspector]
     public bool _isDead;
 
+    private bool _isOnLager;
+
     private void Start()
     {
         ResetLungVolume();
@@ -39,8 +41,15 @@ public class RespiratorySystem : MonoBehaviour
         }
     }
 
+    private bool IsOnLager()
+    {
+        _isOnLager = FindObjectOfType<LagerSystem>().GetComponent<LagerSystem>().isOnLager;
+        return _isOnLager;
+    }
+
     private void Dead()
     {
+        StopCoroutine(RemoveLungVolume());
         gameObject.GetComponent<Rigidbody>().freezeRotation = false;
 
         _deadScreen.gameObject.SetActive(true);
@@ -74,14 +83,14 @@ public class RespiratorySystem : MonoBehaviour
     /// <returns></returns>
     private IEnumerator RemoveLungVolume() 
     {
-        while(lungVolume > 0)
+        while (lungVolume > 0)
         {
             --lungVolume;
             UpdateLungSlider();
 
             yield return new WaitForSeconds(_lungSpeed);
         }
-
+       
         yield return null;
     }
 }

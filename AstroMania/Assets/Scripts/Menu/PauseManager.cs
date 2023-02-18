@@ -9,43 +9,52 @@ public class PauseManager : MonoBehaviour
     [SerializeField] private List<Menu> _menuList = new List<Menu>();
     private Menu _activeMenu;
 
+    [Header("Camera")]
+    [SerializeField] private GameObject _playerCameraController;
+
     [Header("InputActions")]
     [SerializeField] private InputActionReference _pauseKey;
 
-    private bool _isPaused;
+    public bool isPaused;
+
     private bool _isDead;
+    private bool _isOnLager;
 
     private void Update()
     {
         MakePause();
     }
 
+    /// <summary>
+    /// Wird immer ausgeführt aber nur wenn Escape gedrückt wird passiert etwas
+    /// </summary>
     public void MakePause()
     {
         _isDead = FindObjectOfType<RespiratorySystem>().GetComponent<RespiratorySystem>()._isDead;
+        _isOnLager = FindObjectOfType<LagerSystem>().GetComponent<LagerSystem>().isOnLager;
 
         bool isPauseKeyPressed = _pauseKey.action.triggered;
 
         if (isPauseKeyPressed)
         {
             
-            if(!_isDead)
+            if(!_isDead && !_isOnLager)
             {
-                if (!_isPaused)
+                if (!isPaused)
                 {
                     //Pause Menu aus machen
 
                     SetMenu(0);
                     TimeOff();
-                    _isPaused = true;
+                    _playerCameraController.SetActive(false);
+                    isPaused = true;
                 }
                 else
                 {
                     //Pause Menu an machen
 
                     DeactivateAllMenus();
-                    TimeOn();
-                    _isPaused = false;
+                    isPaused = false;
                 }
             }
         }
@@ -82,7 +91,8 @@ public class PauseManager : MonoBehaviour
     public void DeactivateAllMenus()
     {
         TimeOn();
-        _isPaused = false;
+        isPaused = false;
+        _playerCameraController.SetActive(true);
 
         for (int i = 0; i < _menuList.Count; i++)
         {
@@ -91,12 +101,18 @@ public class PauseManager : MonoBehaviour
     }
     #endregion
 
+    /// <summary>
+    /// Deaktiviert nur den Pause Screen
+    /// </summary>
     public void DeactivatePause()
     {
-        _isPaused = false;
+        isPaused = false;
         TimeOn();
     }
 
+    /// <summary>
+    /// Cursor weg und Time auf 1
+    /// </summary>
     private void TimeOn()
     {
         Cursor.lockState = CursorLockMode.Locked;
@@ -104,6 +120,9 @@ public class PauseManager : MonoBehaviour
         Time.timeScale = 1f;
     }
 
+    /// <summary>
+    /// Cursor da und Time auf 0
+    /// </summary>
     private void TimeOff()
     {
         Cursor.lockState = CursorLockMode.None;

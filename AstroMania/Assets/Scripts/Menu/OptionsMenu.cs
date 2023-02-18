@@ -22,19 +22,27 @@ public class OptionsMenu : MonoBehaviour
     [SerializeField]
     private Slider _soundsVolumeSlider;
 
-    //DropDown Graphic Quality
+    //Graphic Setting int
     [SerializeField]
-    private TMP_Dropdown _graphicQualityDropdown;
+    private int _graphicSettings;
 
     //GameManager
     [SerializeField]
     private GameManager _gameManager;
 
+    //DropDown Graphic Quality
+    [SerializeField]
+    private TMP_Dropdown _dropDownGraphics;
+
     private void Start()
     {
         UpdateSliderFromVolume();
+        UpdateDropDownMenuFromGraphicSettings();
     }
 
+    /// <summary>
+    /// Updated die Volumes von den Slidern
+    /// </summary>
     public void UpdateVolumeFromSlider()
     {
         AudioManager.Instance.masterVolume = _masterVolumeSlider.value;
@@ -43,9 +51,18 @@ public class OptionsMenu : MonoBehaviour
         AudioManager.Instance.SetVolumes();
     }
 
+    public void UpdatePostProcessFromDropDown()
+    {
+        PostProcessingManager.Instance.graphicSettings = _dropDownGraphics.value;
+        PostProcessingManager.Instance.SetGraphics();
+    }
+
+    /// <summary>
+    /// Updated den Slider von den Volumes
+    /// </summary>
     public void UpdateSliderFromVolume()
     {
-        //Nur die erste Zeile wird ausgeführt nur wenn ich es davor in extra eigene Variablen abspeichere
+        //Nur die erste Zeile wird ausgeführt. Nur wenn ich es davor in extra eigene Variablen abspeichere geht es
         float masterVolume = 0;
         float musicVolume = 0;
         float soundVolume = 0;
@@ -57,5 +74,14 @@ public class OptionsMenu : MonoBehaviour
         _masterVolumeSlider.value = masterVolume;
         _musicVolumeSlider.value = musicVolume;
         _soundsVolumeSlider.value = soundVolume;
+    }
+
+    public void UpdateDropDownMenuFromGraphicSettings()
+    {
+        int graphic = 0;
+
+        graphic = PostProcessingManager.Instance.graphicSettings;
+
+        _dropDownGraphics.value = graphic;
     }
 }

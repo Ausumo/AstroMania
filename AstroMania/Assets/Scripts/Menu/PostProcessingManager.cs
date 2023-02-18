@@ -1,7 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UI;
+using UnityEngine.UIElements;
 
 public class PostProcessingManager : MonoBehaviour
 {
@@ -21,45 +22,55 @@ public class PostProcessingManager : MonoBehaviour
         }
     }
 
-    private Volume _volumeProfile;
+    private Volume _volume;
 
-    private void Start()
+    [SerializeField]
+    private VolumeProfile _highProfile;
+    [SerializeField]
+    private VolumeProfile _mediumProfile;
+    [SerializeField]
+    private VolumeProfile _lowProfile;
+
+    public int graphicSettings;
+
+    private void Awake()
     {
-        _volumeProfile = gameObject.GetComponent<Volume>();
+        _volume = gameObject.GetComponent<Volume>();
     }
 
-    public int SetGraphics(int setting)
+    public void SetGraphics()
     {
-        switch(setting)
+        switch(graphicSettings)
         {
-            case 0:
-
+            case 0: 
+                Low();
                 break;
 
             case 1:
-
+                Medium();
                 break;
 
             case 2:
-
+                High();
                 break;
         }
-
-        return -1;
     }
 
     private void Low()
     {
-
+        _volume.profile = _lowProfile;
+        graphicSettings = 0;
     }
 
     private void Medium()
     {
-
+        _volume.profile = _mediumProfile;
+        graphicSettings = 1;
     }
 
     private void High()
     {
-
+        _volume.profile = _highProfile;
+        graphicSettings = 2;
     }
 }

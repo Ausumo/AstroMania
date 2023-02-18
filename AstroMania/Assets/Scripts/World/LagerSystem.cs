@@ -7,8 +7,10 @@ using UnityEngine.UI;
 
 public class LagerSystem : MonoBehaviour
 {
+    public bool isOnLager;
+
     [SerializeField] private bool _isInteract;
-    [SerializeField] private bool _isOnLager;
+    [SerializeField] private bool _stayOnLager;
     [SerializeField] private string _playerTag;
 
     [SerializeField] private int _rocketFuel;
@@ -22,6 +24,7 @@ public class LagerSystem : MonoBehaviour
     [Header("UI")]
     [SerializeField] private GameObject _lagerPanel;
     [SerializeField] private Slider _rocketFuelSlider;
+    [SerializeField] private Button _startRocketButton;
 
     [Header("Camera")]
     [SerializeField] private GameObject _playerCameraController;
@@ -29,10 +32,12 @@ public class LagerSystem : MonoBehaviour
     [Header("PlayerMovement")]
     [SerializeField] private PlayerMovement _playerMove;
 
+    private bool _isPaused;
 
 
     private void Start()
     {
+        _startRocketButton.interactable = false;
         _lagerPanel.SetActive(false);
         ResetRocketFuel();
     }
@@ -64,7 +69,7 @@ public class LagerSystem : MonoBehaviour
         if(collision.gameObject.tag == _playerTag)
         {
             _playerGO = collision.gameObject;
-            _isOnLager = true;
+            _stayOnLager = true;
         }
     }
 
@@ -72,7 +77,7 @@ public class LagerSystem : MonoBehaviour
     {
         if (collision.gameObject.tag == _playerTag)
         {
-            _isOnLager = false;
+            _stayOnLager = false;
             _playerGO = null;
             Close();
         }
@@ -83,19 +88,30 @@ public class LagerSystem : MonoBehaviour
     /// </summary>
     private void OpenLager()
     {
-        if(_isOnLager && _isInteract)
+        _isPaused = FindObjectOfType<PauseManager>().GetComponent<PauseManager>().isPaused;
+
+        if(!_isPaused )
         {
-            _lagerPanel.GetComponent<Menu>().SelectFirstButton();
+            if (_stayOnLager && _isInteract)
+            {
+                _lagerPanel.GetComponent<Menu>().SelectFirstButton();
 
-            //Resetet die Lunge bzw. befüllt die Luftflaschen wieder
-            _playerGO.GetComponent<RespiratorySystem>().ResetLungVolume();
+                //Resetet die Lunge bzw. befüllt die Luftflaschen wieder
+                _playerGO.GetComponent<RespiratorySystem>().ResetLungVolume();
 
-            //Lager Panel aktiv
-            _lagerPanel.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-            _playerCameraController.SetActive(false);
-            _playerMove.enabled = false;
+                //Lager Panel aktiv
+                isOnLager = true;
+                _lagerPanel.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+                _playerCameraController.SetActive(false);
+                _playerMove.enabled = false;
+
+                if(_rocketFuel == _maxRocketFuel)
+                {
+                    _startRocketButton.interactable = true;
+                }
+            }
         }
     }
 
@@ -113,8 +129,8 @@ public class LagerSystem : MonoBehaviour
     private void CloseLager()
     {
         //Lager Panel inaktiv
-
-        _isOnLager = false;
+        isOnLager = false;
+        _stayOnLager = false;
         _lagerPanel.SetActive(false);
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
