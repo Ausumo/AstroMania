@@ -9,6 +9,8 @@ public class LevelManager : MonoBehaviour
 
     private AudioManager _audioManager;
 
+    private SaveManager _saveManager;
+
     // Start is called before the first frame update
     void Start()
     {

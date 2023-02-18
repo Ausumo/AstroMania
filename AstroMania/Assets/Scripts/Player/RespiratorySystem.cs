@@ -18,7 +18,7 @@ public class RespiratorySystem : MonoBehaviour
     private Menu _deadScreen;
 
     [HideInInspector]
-    public bool _isDead;
+    public bool isDead;
 
     private bool _isOnLager;
 
@@ -53,7 +53,7 @@ public class RespiratorySystem : MonoBehaviour
         gameObject.GetComponent<Rigidbody>().freezeRotation = false;
 
         _deadScreen.gameObject.SetActive(true);
-        _isDead = true;
+        isDead = true;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;

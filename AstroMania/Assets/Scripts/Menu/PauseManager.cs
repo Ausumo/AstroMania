@@ -30,7 +30,7 @@ public class PauseManager : MonoBehaviour
     /// </summary>
     public void MakePause()
     {
-        _isDead = FindObjectOfType<RespiratorySystem>().GetComponent<RespiratorySystem>()._isDead;
+        _isDead = FindObjectOfType<RespiratorySystem>().GetComponent<RespiratorySystem>().isDead;
         _isOnLager = FindObjectOfType<LagerSystem>().GetComponent<LagerSystem>().isOnLager;
 
         bool isPauseKeyPressed = _pauseKey.action.triggered;
