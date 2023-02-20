@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Stone
   - AudioManager
+  - PlayerObjTag
   layers:
   - Default
   - TransparentFX

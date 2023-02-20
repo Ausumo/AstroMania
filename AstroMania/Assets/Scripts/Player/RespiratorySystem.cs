@@ -24,7 +24,6 @@ public class RespiratorySystem : MonoBehaviour
 
     private void Start()
     {
-        ResetLungVolume();
         StartCoroutine(RemoveLungVolume());
     }
 
@@ -39,12 +38,6 @@ public class RespiratorySystem : MonoBehaviour
         {
             Dead();
         }
-    }
-
-    private bool IsOnLager()
-    {
-        _isOnLager = FindObjectOfType<LagerSystem>().GetComponent<LagerSystem>().isOnLager;
-        return _isOnLager;
     }
 
     private void Dead()
@@ -72,7 +65,7 @@ public class RespiratorySystem : MonoBehaviour
     /// <summary>
     /// Updated den Slider
     /// </summary>
-    private void UpdateLungSlider()
+    public void UpdateLungSlider()
     {
         _playerLungSlider.value = lungVolume;
     }

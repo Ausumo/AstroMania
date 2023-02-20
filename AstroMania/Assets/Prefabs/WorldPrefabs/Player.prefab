@@ -1112,7 +1112,7 @@ MonoBehaviour:
   _lungSpeed: 1
   _playerLungSlider: {fileID: 0}
   _deadScreen: {fileID: 0}
-  _isDead: 0
+  isDead: 0
 --- !u!1 &5423366605287182030
 GameObject:
   m_ObjectHideFlags: 0
@@ -1124,7 +1124,7 @@ GameObject:
   - component: {fileID: 5423366605287182031}
   m_Layer: 0
   m_Name: PlayerObj
-  m_TagString: Player
+  m_TagString: PlayerObjTag
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

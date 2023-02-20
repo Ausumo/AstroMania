@@ -13,7 +13,10 @@ public class LagerSystem : MonoBehaviour
     [SerializeField] private bool _stayOnLager;
     [SerializeField] private string _playerTag;
 
-    [SerializeField] private int _rocketFuel;
+    public int rocketFuel;
+
+    public bool isPlayerWin;
+
     [SerializeField] private int _maxRocketFuel = 50;
 
     private GameObject _playerGO;
@@ -39,7 +42,6 @@ public class LagerSystem : MonoBehaviour
     {
         _startRocketButton.interactable = false;
         _lagerPanel.SetActive(false);
-        ResetRocketFuel();
     }
 
     private void Update()
@@ -107,9 +109,10 @@ public class LagerSystem : MonoBehaviour
                 _playerCameraController.SetActive(false);
                 _playerMove.enabled = false;
 
-                if(_rocketFuel == _maxRocketFuel)
+                if(rocketFuel == _maxRocketFuel)
                 {
                     _startRocketButton.interactable = true;
+                    isPlayerWin = true;
                 }
             }
         }
@@ -150,9 +153,9 @@ public class LagerSystem : MonoBehaviour
         _playerGO.GetComponent<FuelSystem>().ResetPlayerFuel();
     }
 
-    private void UpdateRocketFuelSlider()
+    public void UpdateRocketFuelSlider()
     {
-        _rocketFuelSlider.value = _rocketFuel;
+        _rocketFuelSlider.value = rocketFuel;
     }
 
     /// <summary>
@@ -161,13 +164,13 @@ public class LagerSystem : MonoBehaviour
     /// <param name="playerFuel"></param>
     private void AddRocketFuel(int playerFuel)
     {
-        this._rocketFuel += playerFuel;
+        this.rocketFuel += playerFuel;
         UpdateRocketFuelSlider();
     }
 
     private void ResetRocketFuel()
     {
-        _rocketFuel = 0;
+        rocketFuel = 0;
         UpdateRocketFuelSlider();
     }
 

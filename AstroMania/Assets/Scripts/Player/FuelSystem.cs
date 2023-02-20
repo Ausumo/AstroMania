@@ -21,7 +21,7 @@ public class FuelSystem : MonoBehaviour
     /// <summary>
     /// Update the Player Fuel Slider
     /// </summary>
-    private void UpdatePlayerFuelSlider()
+    public void UpdatePlayerFuelSlider()
     {
         _playerFuelSlider.value = playerFuel;
     }
