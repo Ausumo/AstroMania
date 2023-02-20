@@ -23,6 +23,9 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    
+    public bool isGameLoaded;
+
     #region Save and Load Options
     /// <summary>
     /// Speichert alle Werte des OptionsMenu
@@ -52,4 +55,8 @@ public class GameManager : MonoBehaviour
     }
     #endregion
 
+    public void IsGameLoaded(bool isLoaded)
+    {
+        isGameLoaded = isLoaded;
+    }
 }

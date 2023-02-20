@@ -9,6 +9,15 @@ public class SaveManager : MonoBehaviour
     [SerializeField]
     private GameObject _player;
 
+    private void Start()
+    {
+        bool _isGameLoaded = GameManager.Instance.isGameLoaded;
+
+        if (_isGameLoaded)
+            LoadFromJson();
+
+    }
+
     public void SaveToJson()
     {
         SaveGame saveGame = new SaveGame();
@@ -16,10 +25,9 @@ public class SaveManager : MonoBehaviour
         saveGame.position[1] = _player.transform.position.y;
         saveGame.position[2] = _player.transform.position.z;
 
-        saveGame.rotation[0] = _player.transform.rotation.x;
-        saveGame.rotation[1] = _player.transform.rotation.y;
-        saveGame.rotation[2] = _player.transform.rotation.z;
-        saveGame.rotation[3] = _player.transform.rotation.w;
+        saveGame.rotation[0] = _player.transform.rotation.eulerAngles.x;
+        saveGame.rotation[1] = _player.transform.rotation.eulerAngles.y;
+        saveGame.rotation[2] = _player.transform.rotation.eulerAngles.z;
         
         saveGame.playerFuel = _player.GetComponent<FuelSystem>().playerFuel;
         saveGame.playerAir = _player.GetComponent<RespiratorySystem>().lungVolume;
@@ -45,10 +53,9 @@ public class SaveManager : MonoBehaviour
         rotation.x = playerData.rotation[0];
         rotation.y = playerData.rotation[1];
         rotation.z = playerData.rotation[2];
-        rotation.w = playerData.rotation[3];
 
         _player.transform.position = position;
-        _player.transform.rotation = rotation;
+        _player.transform.rotation = Quaternion.Euler(playerData.rotation[0], playerData.rotation[1], playerData.rotation[2]);
         #endregion
 
         #region Load Player Variables
