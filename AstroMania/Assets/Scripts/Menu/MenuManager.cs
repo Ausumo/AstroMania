@@ -20,11 +20,9 @@ public class MenuManager : MonoBehaviour
     [SerializeField]
     private ParticleSystem _particleSystem;
 
-    [SerializeField]
-    private AudioManager _audioManager;
-
     void Start()
     {
+        AudioManager.Instance.PlayMusic("Theme");
         _particleSystem.Play();
 
         Cursor.lockState = CursorLockMode.Locked;
@@ -78,8 +76,8 @@ public class MenuManager : MonoBehaviour
     /// </summary>
     public void StartAGame()
     {
-        _audioManager.StopMusic("Theme");
-        _audioManager.PlayMusic("BackgroundMusic");
+        AudioManager.Instance.StopMusic("Theme");
+        AudioManager.Instance.PlayMusic("BackgroundMusic");
     }
 
     /// <summary>

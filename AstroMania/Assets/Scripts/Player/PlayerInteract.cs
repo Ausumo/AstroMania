@@ -45,16 +45,9 @@ public class PlayerInteract : MonoBehaviour
 
         if (interact)
         {
-            if (_stone != null) 
+            if (_stone != null && _stone.isActiveAndEnabled)
             {
                 _stone.MineStone(gameObject.GetComponent<FuelSystem>());
-            }
-        }
-        else
-        {
-            if (_stone != null)
-            {
-                _stone.StopMining();
             }
         }
     }

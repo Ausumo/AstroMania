@@ -28,11 +28,9 @@ public class FuelStones : MonoBehaviour
     {
 
         //Animation Broke Stone
-        yield return new WaitForSeconds(fuelVolume * 0.5f);
-        //--Chance abzubrechen--
-        yield return new WaitForSeconds(fuelVolume * 0.5f);
+        yield return new WaitForSeconds(fuelVolume);
         _collSystem.AddPlayerFuel(fuelVolume);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
     public void StopMining()

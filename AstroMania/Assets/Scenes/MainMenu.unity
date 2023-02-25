@@ -10925,6 +10925,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: 4e3969e2a3a272847b66523def1238e5, type: 3}
   - name: SwipeButton
     clip: {fileID: 8300000, guid: 5fd8180372fec4a4ca14b20145c65488, type: 3}
+  - name: footstep1
+    clip: {fileID: 8300000, guid: a7ed9852577ab0240b3546dd77a46da3, type: 3}
+  - name: footstep2
+    clip: {fileID: 8300000, guid: 5e748c0b70c1d29488d253be84d1cfed, type: 3}
   musicSource: {fileID: 1175048059}
   sfxSource: {fileID: 1856745532}
   Master: {fileID: 24100000, guid: f820b0862fb6a5540a40114eb9eb841f, type: 2}
@@ -12351,7 +12355,6 @@ MonoBehaviour:
   _startMenu: {fileID: 5622744970580760630, guid: 63ce7094bbb8c574298fd36a01cb3fbe,
     type: 3}
   _particleSystem: {fileID: 519047165}
-  _audioManager: {fileID: 1423416094}
 --- !u!4 &1683669577
 Transform:
   m_ObjectHideFlags: 0

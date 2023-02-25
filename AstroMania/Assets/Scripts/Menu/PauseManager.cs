@@ -12,6 +12,13 @@ public class PauseManager : MonoBehaviour
     [Header("Camera")]
     [SerializeField] private GameObject _playerCameraController;
 
+    [Header("Player")]
+    [SerializeField] private GameObject _player;
+    [SerializeField] private GameObject _playerObj;
+    
+    [SerializeField] private Vector3 _restartPoint;
+    [SerializeField] private Quaternion _restartRotation;
+
     [Header("InputActions")]
     [SerializeField] private InputActionReference _pauseKey;
 
@@ -59,6 +66,7 @@ public class PauseManager : MonoBehaviour
             }
         }
     }
+
 
     #region Menu Methods
     /// <summary>

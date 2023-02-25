@@ -11,11 +11,13 @@ public class RespiratorySystem : MonoBehaviour
     [SerializeField]
     private float _lungSpeed = 2;
 
-    [SerializeField]
-    private Slider _playerLungSlider;
+    [Header("UI")]
+    [SerializeField]private Slider _playerLungSlider;
 
-    [SerializeField]
-    private Menu _deadScreen;
+    public Menu deadScreen;
+
+    [Header("Camera")]
+    [SerializeField] private GameObject _playerCameraController;
 
     [HideInInspector]
     public bool isDead;
@@ -44,8 +46,8 @@ public class RespiratorySystem : MonoBehaviour
     {
         StopCoroutine(RemoveLungVolume());
         gameObject.GetComponent<Rigidbody>().freezeRotation = false;
-
-        _deadScreen.gameObject.SetActive(true);
+        _playerCameraController.SetActive(false);
+        deadScreen.gameObject.SetActive(true);
         isDead = true;
 
         Cursor.lockState = CursorLockMode.None;
@@ -74,7 +76,7 @@ public class RespiratorySystem : MonoBehaviour
     /// Zieht mit dem angegebenen Speed die Lungen Kapazität ab
     /// </summary>
     /// <returns></returns>
-    private IEnumerator RemoveLungVolume() 
+    public IEnumerator RemoveLungVolume() 
     {
         while (lungVolume > 0)
         {

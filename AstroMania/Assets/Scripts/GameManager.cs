@@ -18,6 +18,10 @@ public class GameManager : MonoBehaviour
                 _instance = FindObjectOfType<GameManager>();
                 DontDestroyOnLoad(_instance.gameObject);
             }
+            else
+            {
+                Destroy(_instance.gameObject);
+            }
 
             return _instance;
         }

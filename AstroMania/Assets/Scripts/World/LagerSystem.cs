@@ -168,7 +168,7 @@ public class LagerSystem : MonoBehaviour
         UpdateRocketFuelSlider();
     }
 
-    private void ResetRocketFuel()
+    public void ResetRocketFuel()
     {
         rocketFuel = 0;
         UpdateRocketFuelSlider();

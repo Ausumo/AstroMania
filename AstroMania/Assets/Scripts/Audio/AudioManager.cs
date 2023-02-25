@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.Audio;
 
@@ -38,11 +39,6 @@ public class AudioManager : MonoBehaviour
 
             return _instance;
         }
-    }
-
-    private void Start()
-    {
-        PlayMusic("Theme");
     }
 
     public void PlayMusic(string name)
