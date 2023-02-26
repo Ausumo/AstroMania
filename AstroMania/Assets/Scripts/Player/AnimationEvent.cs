@@ -14,6 +14,12 @@ public class AnimationEvent : MonoBehaviour
     private GameObject _footRight;
     [SerializeField]
     private GameObject _footLeft;
+    [SerializeField]
+    private float _distance = 0.2f;
+    [SerializeField]
+    private GameObject _playerObj;
+    [SerializeField]
+    private GameObject _footPrint;
 
     public void FootstepsEvent(int foot)
     {
@@ -31,13 +37,15 @@ public class AnimationEvent : MonoBehaviour
 
         AudioManager.Instance.PlaySound(_soundName);
 
-        switch(foot)
+        switch (foot)
         {
             case 0:
                 //Rechter Fuﬂabdruck
+
                 break;
             case 1:
                 //Linker Fuﬂabdruck
+
                 break;
         }
     }
