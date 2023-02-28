@@ -4,6 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class LagerSystem : MonoBehaviour
 {
@@ -112,7 +113,6 @@ public class LagerSystem : MonoBehaviour
                 if(rocketFuel == _maxRocketFuel)
                 {
                     _startRocketButton.interactable = true;
-                    isPlayerWin = true;
                 }
             }
         }
@@ -172,6 +172,13 @@ public class LagerSystem : MonoBehaviour
     {
         rocketFuel = 0;
         UpdateRocketFuelSlider();
+    }
+
+
+    public void StartRocket()
+    {
+        isPlayerWin = true;
+        SceneManager.LoadScene(2);
     }
 
 

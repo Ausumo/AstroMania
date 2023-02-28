@@ -10941,6 +10941,10 @@ MonoBehaviour:
     clip: {fileID: 8300000, guid: a7ed9852577ab0240b3546dd77a46da3, type: 3}
   - name: footstep2
     clip: {fileID: 8300000, guid: 5e748c0b70c1d29488d253be84d1cfed, type: 3}
+  - name: RocketLaunch
+    clip: {fileID: 8300000, guid: c1c5d4aaf778f9b4890159f0a67fb1fb, type: 3}
+  - name: Jump
+    clip: {fileID: 8300000, guid: 4852e1a57b4364a45b493aaa4e017fd4, type: 3}
   musicSource: {fileID: 1175048059}
   sfxSource: {fileID: 1856745532}
   Master: {fileID: 24100000, guid: f820b0862fb6a5540a40114eb9eb841f, type: 2}

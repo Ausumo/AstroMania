@@ -121,6 +121,7 @@ public class PlayerMovement : MonoBehaviour
 
             if (isJumping)
             {
+                AudioManager.Instance.PlaySound("Jump");
                 _rb.AddForce(_jumpSpeed * Vector3.up, ForceMode.Force);
             }
         }
