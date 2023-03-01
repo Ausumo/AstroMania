@@ -153,6 +153,9 @@ public class LagerSystem : MonoBehaviour
         _playerGO.GetComponent<FuelSystem>().ResetPlayerFuel();
     }
 
+    /// <summary>
+    /// Updatet den Slider der Fuel von der Rocket
+    /// </summary>
     public void UpdateRocketFuelSlider()
     {
         _rocketFuelSlider.value = rocketFuel;
@@ -174,11 +177,12 @@ public class LagerSystem : MonoBehaviour
         UpdateRocketFuelSlider();
     }
 
-
+    /// <summary>
+    /// Setzt den gespeicherten Wert zum Win auf True um beim Laden nicht wieder den Button zu aktivieren
+    /// </summary>
     public void StartRocket()
     {
         isPlayerWin = true;
-        SceneManager.LoadScene(2);
     }
 
 

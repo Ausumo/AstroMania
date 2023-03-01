@@ -1,15 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Playables;
-using UnityEngine.UIElements;
+using UnityEngine.UI;
 
 public class CutsceneManager : MonoBehaviour
 {
 
     private AudioManager _audioManager;
-
-    [SerializeField] private GameObject _backToMainMenuButtom;
 
 
     private void Awake()
@@ -20,17 +19,16 @@ public class CutsceneManager : MonoBehaviour
     private void Start()
     {
         _audioManager.PlaySound("RocketLaunch");
+        Cursor.visible = false;
     }
 
-
+    /// <summary>
+    /// Stoppt den RocketLaunch Sound und Startet einen neuen SOund mit dem Namen "name"
+    /// </summary>
+    /// <param name="name"></param>
     public void PlaySound(string name)
     {
         _audioManager.StopSound("RocketLaunch");
         _audioManager.PlaySound(name);
-    }
-
-    public void ShowButton()
-    {
-        _backToMainMenuButtom.SetActive(true);
     }
 }

@@ -41,6 +41,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Spielt Music ab
+    /// </summary>
+    /// <param name="name"></param>
     public void PlayMusic(string name)
     {
         Sound music = Array.Find(musicSounds, m => m.name == name);
@@ -56,6 +60,10 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Stoppt die aktive Music 
+    /// </summary>
+    /// <param name="name"></param>
     public void StopMusic(string name)
     {
         Sound music = Array.Find(musicSounds, m => m.name == name);
@@ -71,6 +79,28 @@ public class AudioManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// SPielt einen Sound ab
+    /// </summary>
+    /// <param name="name"></param>
+    public void PlaySound(string name)
+    {
+        Sound sound = Array.Find(sfxSounds, s => s.name == name);
+
+        if (sound == null)
+        {
+            Debug.Log($"Sound '{name}' not found");
+        }
+        else
+        {
+            sfxSource.PlayOneShot(sound.clip);
+        }
+    }
+
+    /// <summary>
+    /// Stoppt den aktiven SOund
+    /// </summary>
+    /// <param name="name"></param>
     public void StopSound(string name)
     {
         Sound sound = Array.Find(sfxSounds, s => s.name == name);
@@ -83,20 +113,6 @@ public class AudioManager : MonoBehaviour
         {
             sfxSource.clip = sound.clip;
             sfxSource.Stop();
-        }
-    }
-
-    public void PlaySound(string name)
-    {
-        Sound sound = Array.Find(sfxSounds, s => s.name == name);
-
-        if (sound == null)
-        {
-            Debug.Log($"Sound '{name}' not found");
-        }
-        else
-        {
-            sfxSource.PlayOneShot(sound.clip);
         }
     }
 
