@@ -1,12 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
-using System.IO;
-using UnityEngine.Playables;
-using UnityEngine.Rendering;
 
 public class OptionsMenu : MonoBehaviour
 {
