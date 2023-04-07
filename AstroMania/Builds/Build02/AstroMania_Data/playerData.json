@@ -1,0 +1,37 @@
+{
+    "playerPosition": {
+        "x": 7.252801895141602,
+        "y": 2.6401774883270265,
+        "z": 2.5048067569732668
+    },
+    "playerRotation": {
+        "x": 0.0,
+        "y": -0.05722328647971153,
+        "z": 0.0,
+        "w": 0.9983614683151245
+    },
+    "cameraPosition": {
+        "x": 3.8068337440490724,
+        "y": 3.964104175567627,
+        "z": -2.484893560409546
+    },
+    "CameraAxisX": 34.62958908081055,
+    "CameraAxisY": 0.4150114357471466,
+    "playerFuel": 0,
+    "rocketFuel": 4,
+    "playerAir": 96,
+    "isDead": false,
+    "isWin": false,
+    "stoneCollection": [
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false,
+        false
+    ]
+}
