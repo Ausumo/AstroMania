@@ -1284,7 +1284,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: IsGameLoaded
         m_Mode: 6
@@ -8960,7 +8960,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 1738004421}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SaveOptions
         m_Mode: 1
@@ -10231,7 +10231,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 1738004421}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: IsGameLoaded
         m_Mode: 6
@@ -10440,7 +10440,7 @@ MonoBehaviour:
   _musicVolumeSlider: {fileID: 1883502834}
   _soundsVolumeSlider: {fileID: 1736947593}
   _graphicSettings: 1
-  _gameManager: {fileID: 1738004422}
+  _gameManager: {fileID: 0}
   _dropDownGraphics: {fileID: 963449086}
 --- !u!1 &1275865098
 GameObject:
@@ -11774,7 +11774,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 1738004421}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SaveOptions
         m_Mode: 1
@@ -12677,7 +12677,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 1738004421}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SaveOptions
         m_Mode: 1
@@ -12795,7 +12795,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1738004420}
-  - component: {fileID: 1738004422}
+  - component: {fileID: 1738004421}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -12818,7 +12818,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1738004422
+--- !u!114 &1738004421
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -12827,7 +12827,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 1738004419}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1f299b45fee097f42a80a7928e7f2cc7, type: 3}
+  m_Script: {fileID: 11500000, guid: 97364cb9eecb41a4aa80b2a7baa31234, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   isGameLoaded: 0
@@ -13535,7 +13535,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 1738004422}
+      - m_Target: {fileID: 1738004421}
         m_TargetAssemblyTypeName: GameManager, Assembly-CSharp
         m_MethodName: SaveOptions
         m_Mode: 1
