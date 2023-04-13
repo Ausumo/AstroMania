@@ -47,7 +47,7 @@ public class SaveManager : MonoBehaviour
 
         for(int i = 0; i < _stoneCollection.Length; i++)
         {
-            saveGame.stoneCollection[i] = _stoneCollection[i].active;
+            _stoneCollection[i].SetActive(saveGame.stoneCollection[i]);
         }
 
         string json = JsonUtility.ToJson(saveGame, true);
@@ -85,7 +85,7 @@ public class SaveManager : MonoBehaviour
         #region Load Stones
         for (int i = 0; i < _stoneCollection.Length; i++)
         {
-            _stoneCollection[i].active = saveGame.stoneCollection[i];
+            _stoneCollection[i].SetActive(saveGame.stoneCollection[i]);
         }
         #endregion
     }

@@ -1,37 +1,37 @@
 {
     "playerPosition": {
-        "x": 7.847963333129883,
-        "y": 0.6694486141204834,
-        "z": -1.4420418739318848
+        "x": 89.80769348144531,
+        "y": 4.012299537658691,
+        "z": 81.33697509765625
     },
     "playerRotation": {
         "x": 0.0,
-        "y": 0.9094060063362122,
+        "y": 0.8194251656532288,
         "z": 0.0,
-        "w": 0.41590961813926699
+        "w": 0.5731862187385559
     },
     "cameraPosition": {
-        "x": 2.9354920387268068,
-        "y": 3.3719494342803957,
-        "z": -4.261845588684082
+        "x": 92.97657012939453,
+        "y": 5.940976142883301,
+        "z": 85.53253173828125
     },
-    "CameraAxisX": 60.14377975463867,
-    "CameraAxisY": 0.5785545706748962,
-    "playerFuel": 0,
-    "rocketFuel": 4,
-    "playerAir": 93,
-    "isDead": false,
+    "CameraAxisX": -134.16673278808595,
+    "CameraAxisY": 0.5130670666694641,
+    "playerFuel": 8,
+    "rocketFuel": 2,
+    "playerAir": 0,
+    "isDead": true,
     "isWin": false,
     "stoneCollection": [
         true,
         false,
-        true,
-        true,
-        true,
+        false,
         true,
         true,
         false,
         true,
-        true
+        false,
+        true,
+        false
     ]
 }

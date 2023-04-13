@@ -84,7 +84,6 @@
     <Compile Include="Assets\Scripts\Player\PlayerInteract.cs" />
     <Compile Include="Assets\Scripts\Audio\AudioManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark03.cs" />
-    <Compile Include="Assets\Scripts\CreateEnemyEngineTool\CreateEnemyWindow.cs" />
     <Compile Include="Assets\Scripts\SaveAndLoad\Model\SaveGame.cs" />
     <Compile Include="Assets\Scripts\Player\FuelSystem.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
@@ -97,6 +96,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\Menu\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
+    <Compile Include="Assets\Scripts\MapGenerator\NoiseGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
@@ -115,6 +115,7 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshProFloatingText.cs" />
     <Compile Include="Assets\Scripts\Menu\MenuManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ShaderPropAnimator.cs" />
+    <Compile Include="Assets\Scripts\MapGenerator\Map.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerMovement.cs" />
     <Compile Include="Assets\Scripts\World\LagerSystem.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextInfoDebugTool.cs" />

@@ -11,7 +11,7 @@ public class EndScreenPanelScript : MonoBehaviour
 
     public void ShowCursor()
     {
-        Cursor.visible = false;
+        Cursor.visible = true;
 
         _backToMenuButton.Select();
     }
