@@ -7,10 +7,13 @@ using Unity.VisualScripting.ReorderableList;
 public class CreateMapWindow : EditorWindow
 {
     //Map
-    public Vector2 size;
+    public Terrain terrain;
     public float scale = 0.04f;
     public float scaleMultiplier = 0;
     public Vector2 offset;
+
+    public float frequencX = 0;
+    public float frequencY = 0;
 
     private float minLimit = 0.01f;
     private float maxLimit = 0.99f;
@@ -26,14 +29,6 @@ public class CreateMapWindow : EditorWindow
     {
         GUILayout.Label("Map Settings", EditorStyles.label);
 
-        EditorGUILayout.Space();
-
-        #region Map Size
-
-        GUILayout.BeginHorizontal();
-        size = EditorGUILayout.Vector2Field("Map Size:", size, GUILayout.MaxWidth(175));
-        GUILayout.EndHorizontal();
-        #endregion
 
         #region MapScale
         EditorGUILayout.Space();
@@ -47,7 +42,19 @@ public class CreateMapWindow : EditorWindow
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
-        scaleMultiplier = EditorGUILayout.Slider("Scale sMultiplier:", scaleMultiplier, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        scaleMultiplier = EditorGUILayout.Slider("Scale Multiplier:", scaleMultiplier, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+        #endregion
+
+        #region Frequenc
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        frequencX = EditorGUILayout.Slider("Frequenc X:", frequencX, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+
+        GUILayout.BeginHorizontal();
+        frequencY = EditorGUILayout.Slider("Frequenc Y:", frequencY, minLimit, maxLimit, GUILayout.MaxWidth(300));
         GUILayout.EndHorizontal();
         #endregion
 
@@ -65,7 +72,7 @@ public class CreateMapWindow : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Create Map", GUILayout.MaxWidth(150)))
         {
-            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, offset);
+            FindObjectOfType<Map>().GenerateMap(scale, scaleMultiplier, frequencX, frequencY, offset);
         }
         GUILayout.EndHorizontal();
         #endregion

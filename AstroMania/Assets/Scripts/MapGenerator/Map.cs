@@ -1,3 +1,4 @@
+using System.Xml.Schema;
 using Unity.VisualScripting;
 using UnityEngine;
 
@@ -14,12 +15,11 @@ public class Map : MonoBehaviour
     /// <param name="size"></param>
     /// <param name="scale"></param>
     /// <param name="offset"></param>
-    public void GenerateMap(Vector2 size, float scale, float scaleMultiplier, Vector2 offset)
+    public void GenerateMap(float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset)
     {
+        heightMap = NoiseGenerator.CreateNoiseMap(scale, scaleMultiplier, frequencX, frequencY, offset);
 
-        heightMap = NoiseGenerator.CreateNoiseMap(size, scale, scaleMultiplier, offset);
-
-        terrain.terrainData.heightmapResolution = (int)size.x + 1;
+        terrain.terrainData.heightmapResolution = 513;
 
         terrain.terrainData.SetHeights(0, 0, heightMap);
     }
