@@ -11,12 +11,14 @@ public static class NoiseGenerator
     /// <param name="scale"></param>
     /// <param name="offset"></param>
     /// <returns></returns>
-    public static float[,] CreateNoiseMap(Vector2 size, float scale, Vector2 offset)
+    public static float[,] CreateNoiseMap(Vector2 size, float scale, float scaleMultiplier, Vector2 offset)
     {
         int sizeX = (int)size.x;
         int sizeY = (int)size.y;
 
         float[,] noiseMap =  new float[sizeX, sizeY];
+
+        scale *= scaleMultiplier;
 
         for (int x = 0; x < sizeX; x++)
         {

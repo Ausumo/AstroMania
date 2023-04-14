@@ -9,6 +9,7 @@ public class CreateMapWindow : EditorWindow
     //Map
     public Vector2 size;
     public float scale = 0.04f;
+    public float scaleMultiplier = 0;
     public Vector2 offset;
 
     private float minLimit = 0.01f;
@@ -42,6 +43,14 @@ public class CreateMapWindow : EditorWindow
         GUILayout.EndHorizontal();
         #endregion
 
+        #region MapScaleMultiplier
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        scaleMultiplier = EditorGUILayout.Slider("Scale sMultiplier:", scaleMultiplier, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+        #endregion
+
         #region MapOffset
         EditorGUILayout.Space();
 
@@ -56,7 +65,7 @@ public class CreateMapWindow : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Create Map", GUILayout.MaxWidth(150)))
         {
-            FindObjectOfType<Map>().GenerateMap(size, scale, offset);
+            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, offset);
         }
         GUILayout.EndHorizontal();
         #endregion
