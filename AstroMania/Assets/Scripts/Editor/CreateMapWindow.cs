@@ -30,19 +30,19 @@ public class CreateMapWindow : EditorWindow
         GUILayout.Label("Map Settings", EditorStyles.label);
 
 
-        #region MapScale
+        #region Mountain Häufigkeit (Scale Multiplier)
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
-        scale = EditorGUILayout.Slider("Map Scale:", scale, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        scale = EditorGUILayout.Slider("Mountain Multiplier:", scale, minLimit, maxLimit, GUILayout.MaxWidth(300));
         GUILayout.EndHorizontal();
         #endregion
 
-        #region MapScaleMultiplier
+        #region MapHeight (Scale)
         EditorGUILayout.Space();
 
-        GUILayout.BeginHorizontal();
-        scaleMultiplier = EditorGUILayout.Slider("Scale Multiplier:", scaleMultiplier, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        GUILayout.BeginHorizontal(); 
+        scaleMultiplier = EditorGUILayout.Slider("Map Height:", scaleMultiplier, minLimit, maxLimit, GUILayout.MaxWidth(300));
         GUILayout.EndHorizontal();
         #endregion
 
