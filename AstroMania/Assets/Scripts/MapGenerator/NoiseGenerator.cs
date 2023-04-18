@@ -18,6 +18,7 @@ public static class NoiseGenerator
         int sizeY = 513;
 
         float[,] noiseMap = new float[sizeX, sizeY];
+        float[,] noiseMap2 = new float[sizeX, sizeY];
 
         for (int x = 0; x < sizeX; x++)
         {
@@ -27,9 +28,13 @@ public static class NoiseGenerator
                 float posY = (y * scale + offset.y) * 0.1f;
 
                 noiseMap[x, y] = Mathf.PerlinNoise(posX * frequencX, posY * frequencY) * scaleMultiplier;
+                noiseMap2[x, y] = Mathf.PerlinNoise(posX * frequencX * 0.7f, posY * frequencY * 0.7f) * scaleMultiplier * 0.7f;
+
+                noiseMap[x, y] *= noiseMap2[x, y];
             }
         }
 
         return noiseMap;
     }
+
 }
