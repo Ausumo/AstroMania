@@ -6,15 +6,12 @@ public class Map : MonoBehaviour
 {
     [Header("HeightMap")]
     public float[,] heightMap;
-    public float[,,] alphaMap;
+    public float[,] craterMap;
 
     public Terrain terrain;
 
-    [Header("AlphaMap")]
-    private const float WATER = 0.0f;
-    private const float SAND = 0.3f;
-    private const float GRASS = 0.7f;
-    private const float SNOW = 0.9f;
+    public Texture2D texture;
+
 
     /// <summary>
     /// Set the Size and Heights to the Terrain
@@ -22,26 +19,31 @@ public class Map : MonoBehaviour
     /// <param name="size"></param>
     /// <param name="scale"></param>
     /// <param name="offset"></param>
-    public void GenerateMap(float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset)
+    public void GenerateMap(int size, float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset, AnimationCurve craterCurve, float craterSize)
     {
-        heightMap = NoiseGenerator.CreateNoiseMap(scale, scaleMultiplier, frequencX, frequencY, offset);
+        if (craterCurve == null)
+            return;
 
-        var alphaResolution = terrain.terrainData.alphamapResolution;
+        heightMap = NoiseGenerator.CreateNoiseMap(size, scale, scaleMultiplier, frequencX, frequencY, offset);
+        craterMap = CraterGenerator.CreateCraterMap(size, craterSize, craterCurve);
 
-        alphaMap = new float[alphaResolution, alphaResolution, 4];
+        texture = new Texture2D(127, 127, TextureFormat.RGBA32, false);
 
-        terrain.terrainData.heightmapResolution = 513;
+        terrain.terrainData.heightmapResolution = size;
 
-        //for (int x = 0; x < 513; x++)
-        //{
-        //    for (int y = 0; y < 513; y++)
-        //    {
-        //        alphaMap[x , y, GRASS];
-        //    }
-        //}
+        for (int x = 0; x < size; x++)
+        {
+            for (int y = 0; y < size; y++)
+            {
+                heightMap[x, y] += craterMap[x, y];
+
+
+                //texture.SetPixel(x, y, new Color(craterMap[x, y], 0, 0, 255));
+                //texture.Apply();
+            }
+        }
 
         terrain.terrainData.SetHeights(0, 0, heightMap);
-        terrain.terrainData.SetAlphamaps(0, 0, alphaMap);
     }
 }
  

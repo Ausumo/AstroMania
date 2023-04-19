@@ -8,12 +8,19 @@ public class CreateMapWindow : EditorWindow
 {
     //Map
     public Terrain terrain;
+    public int size = 513;
     public float scale = 0.04f;
     public float scaleMultiplier = 0;
     public Vector2 offset;
 
     public float frequencX = 0;
     public float frequencY = 0;
+
+    public AnimationCurve craterCurve;
+    public float craterSize = 20;
+
+    private float minLimitCrater = 0f;
+    private float maxLimitCrater = 500f;
 
     private float minLimit = 0.01f;
     private float maxLimit = 0.99f;
@@ -29,16 +36,23 @@ public class CreateMapWindow : EditorWindow
     {
         GUILayout.Label("Map Settings", EditorStyles.label);
 
-
-        #region Mountain Häufigkeit (Scale Multiplier)
+        #region size
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
-        scale = EditorGUILayout.Slider("Mountain Multiplier:", scale, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        size = EditorGUILayout.IntField("Map Size (z.b.: 513):", size, GUILayout.MaxWidth(300));
         GUILayout.EndHorizontal();
         #endregion
 
-        #region MapHeight (Scale)
+        #region Mountain Häufigkeit (scale)
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        scale = EditorGUILayout.Slider("Map Scale:", scale, minLimit, maxLimit, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+        #endregion
+
+        #region MapHeight (scaleMultiplier)
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal(); 
@@ -66,13 +80,30 @@ public class CreateMapWindow : EditorWindow
         GUILayout.EndHorizontal();
         #endregion
 
+        #region Crater Curve
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        craterCurve = EditorGUILayout.CurveField("Crater Curve:", craterCurve, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+
+        #endregion
+
+        #region Crater Size
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        craterSize = EditorGUILayout.Slider("Map Scale:", craterSize, minLimitCrater, maxLimitCrater, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+        #endregion
+
         #region Create Map Button
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Create Map", GUILayout.MaxWidth(150)))
         {
-            FindObjectOfType<Map>().GenerateMap(scale, scaleMultiplier, frequencX, frequencY, offset);
+            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, frequencX, frequencY, offset, craterCurve, craterSize);
         }
         GUILayout.EndHorizontal();
         #endregion

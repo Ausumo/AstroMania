@@ -12,29 +12,23 @@ public static class NoiseGenerator
     /// <param name="scale"></param>
     /// <param name="offset"></param>
     /// <returns></returns>
-    public static float[,] CreateNoiseMap(float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset)
+    public static float[,] CreateNoiseMap(int size, float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset)
     {
-        int sizeX = 513;
-        int sizeY = 513;
 
-        float[,] noiseMap = new float[sizeX, sizeY];
-        float[,] noiseMap2 = new float[sizeX, sizeY];
+        float[,] noiseMapLayerOne = new float[size, size];
 
-        for (int x = 0; x < sizeX; x++)
+        for (int x = 0; x < size; x++)
         {
-            for (int y = 0; y < sizeY; y++)
+            for (int y = 0; y < size; y++)
             {
-                float posX = (x * scale + offset.x) * 0.1f;
-                float posY = (y * scale + offset.y) * 0.1f;
+                float posX = (x * scale + offset.x)/* * 0.1f*/;
+                float posY = (y * scale + offset.y)/* * 0.1f*/;
 
-                noiseMap[x, y] = Mathf.PerlinNoise(posX * frequencX, posY * frequencY) * scaleMultiplier;
-                noiseMap2[x, y] = Mathf.PerlinNoise(posX * frequencX * 0.7f, posY * frequencY * 0.7f) * scaleMultiplier * 0.7f;
-
-                noiseMap[x, y] *= noiseMap2[x, y];
+                noiseMapLayerOne[x, y] = Mathf.PerlinNoise(posX * frequencX, posY * frequencY) * scaleMultiplier;
             }
         }
 
-        return noiseMap;
+        return noiseMapLayerOne;
     }
 
 }
