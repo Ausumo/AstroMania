@@ -10,11 +10,11 @@ public class Map : MonoBehaviour
 
     public Terrain terrain;
 
-    public Texture2D texture;
+    //public Texture2D texture;
 
 
     /// <summary>
-    /// Set the Size and Heights to the Terrain
+    /// Set the Size, Heights and Maps to the Terrain
     /// </summary>
     /// <param name="size"></param>
     /// <param name="scale"></param>
@@ -27,7 +27,7 @@ public class Map : MonoBehaviour
         heightMap = NoiseGenerator.CreateNoiseMap(size, scale, scaleMultiplier, frequencX, frequencY, offset);
         craterMap = CraterGenerator.CreateCraterMap(size, craterSize, craterCurve);
 
-        texture = new Texture2D(127, 127, TextureFormat.RGBA32, false);
+        //texture = new Texture2D(127, 127, TextureFormat.RGBA32, false);
 
         terrain.terrainData.heightmapResolution = size;
 

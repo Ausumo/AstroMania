@@ -6,7 +6,7 @@ using UnityEngine;
 public static class NoiseGenerator
 {
     /// <summary>
-    /// Create the NoiseMap
+    /// Create a NoiseMap
     /// </summary>
     /// <param name="size"></param>
     /// <param name="scale"></param>
@@ -21,8 +21,8 @@ public static class NoiseGenerator
         {
             for (int y = 0; y < size; y++)
             {
-                float posX = (x * scale + offset.x)/* * 0.1f*/;
-                float posY = (y * scale + offset.y)/* * 0.1f*/;
+                float posX = (x * scale + offset.x);
+                float posY = (y * scale + offset.y);
 
                 noiseMapLayerOne[x, y] = Mathf.PerlinNoise(posX * frequencX, posY * frequencY) * scaleMultiplier;
             }
