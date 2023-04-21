@@ -11,11 +11,11 @@ public class CraterGenerator
     /// <param name="craterSize"></param>
     /// <param name="craterCurve"></param>
     /// <returns></returns>
-    public static float[,] CreateCraterMap(int size, float craterSize, AnimationCurve craterCurve, Vector2 position = new Vector2())
+    public static float[,] CreateCraterMap(int size, float craterSize, float craterDetails, AnimationCurve craterCurve, Vector2 position = new Vector2())
     {
         float[,] craterMap = new float[size, size];
 
-        Vector2 center = new Vector2(size / 2, size / 2);
+        Vector2 center = new Vector2(size * 0.5f, size * 0.5f);
 
         if (position != Vector2.zero)
         {
@@ -26,12 +26,17 @@ public class CraterGenerator
         {
             for (int y = 0; y < size; y++)
             {
-
-                //Calsculate the middle
+                //calculate the middle
                 float distance = Vector2.Distance(center, new Vector2(x, y));
-                //calsculate the lerp
+
+                //create a random and add it to the Distance
+                var rnd = Random.Range(-craterDetails, craterDetails);
+                distance += rnd;
+
+                //calculate the lerp
                 float lerp = Mathf.InverseLerp(0f, craterSize, distance);
-                //Create the map
+
+                //create the map
                 craterMap[x, y] = craterCurve.Evaluate(lerp);
             }
         }

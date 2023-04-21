@@ -17,10 +17,12 @@ public class CreateMapWindow : EditorWindow
     public float frequencY = 0;
 
     public AnimationCurve craterCurve;
+    public AnimationCurve craterCurve2;
     public float craterSize = 20;
+    public float craterDetails = 0.5f;
 
     private float minLimitCrater = 0f;
-    private float maxLimitCrater = 500f;
+    private float maxLimitCrater = 2000f;
 
     private float minLimit = 0.01f;
     private float maxLimit = 0.99f;
@@ -93,7 +95,15 @@ public class CreateMapWindow : EditorWindow
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
-        craterSize = EditorGUILayout.Slider("Map Scale:", craterSize, minLimitCrater, maxLimitCrater, GUILayout.MaxWidth(300));
+        craterSize = EditorGUILayout.Slider("crater Scale:", craterSize, minLimitCrater, maxLimitCrater, GUILayout.MaxWidth(300));
+        GUILayout.EndHorizontal();
+        #endregion
+
+        #region Crater Details
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        craterDetails = EditorGUILayout.Slider("Crater Details:", craterDetails, minLimit,  maxLimit, GUILayout.MaxWidth(300));
         GUILayout.EndHorizontal();
         #endregion
 
@@ -103,7 +113,7 @@ public class CreateMapWindow : EditorWindow
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Create Map", GUILayout.MaxWidth(150)))
         {
-            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, frequencX, frequencY, offset, craterCurve, craterSize);
+            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, frequencX, frequencY, offset, craterCurve, craterSize, craterDetails);
         }
         GUILayout.EndHorizontal();
         #endregion
