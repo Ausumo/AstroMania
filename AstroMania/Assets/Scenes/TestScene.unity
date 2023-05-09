@@ -243,10 +243,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fd6f294370f3ebe4a8ea16f2144c68a3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  terrain: {fileID: 358313882}
-  Sand: {fileID: 0}
-  Stone: {fileID: 0}
-  Ground: {fileID: 0}
+  _terrain: {fileID: 358313882}
 --- !u!4 &516702430
 Transform:
   m_ObjectHideFlags: 0

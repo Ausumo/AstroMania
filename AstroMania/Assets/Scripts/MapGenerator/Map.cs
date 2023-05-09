@@ -1,6 +1,11 @@
+using System.Diagnostics;
 using System.Xml.Schema;
+using Unity.Collections;
 using Unity.VisualScripting;
 using UnityEngine;
+using Unity.Collections;
+using Unity.Jobs;
+using System;
 
 public class Map : MonoBehaviour
 {
@@ -9,17 +14,7 @@ public class Map : MonoBehaviour
     private float[,] craterMap;
 
     [SerializeField]
-    private Terrain terrain;
-
-    //biome map
-    [Header("Texture Map")]
-    [SerializeField]
-    private Material Sand;
-    [SerializeField]
-    private Material Stone;
-    [SerializeField]
-    private Material Ground;
-
+    private Terrain _terrain;
 
     //public Texture2D texture;
 
@@ -32,28 +27,59 @@ public class Map : MonoBehaviour
     /// <param name="offset"></param>
     public void GenerateMap(int size, float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset, AnimationCurve craterCurve, float craterSize, float craterDetails)
     {
-        if (craterCurve == null)
+
+        if (!_terrain.terrainData)
             return;
 
-        heightMap = NoiseGenerator.CreateNoiseMap(size, scale, scaleMultiplier, frequencX, frequencY, offset);
+        int terrainSize = _terrain.terrainData.heightmapResolution;
+
+        var heights = new NativeArray<float>(terrainSize * terrainSize, Allocator.Persistent);
+
+        var job = new TerrainGenJob()
+        {
+            Size = size,
+            ScaleMutliplier = scaleMultiplier,
+            FreuqencX = frequencX,
+            FrequencY = frequencY,
+            HeightMap = heights
+        };
+
+        JobHandle jobHandle = job.Schedule(heights.Length, 64);
+
+        //Other Code
+
+        jobHandle.Complete();
+
+        float[] src = heights.ToArray();
+        float[,] dest = new float[terrainSize, terrainSize];
+        int byteLength = Buffer.ByteLength(src);
+        Buffer.BlockCopy(src, 0, dest, 0, byteLength);
+
+        //_terrain.terrainData.SetHeights(0, 0, dest);
+
+        heights.Dispose();
+
+
+
+
+        //Single Threading
+        if (craterCurve == null)
+            return;
+        
+        //heightMap = NoiseGenerator.CreateNoiseMap(size, scale, scaleMultiplier, frequencX, frequencY, offset);
         craterMap = CraterGenerator.CreateCraterMap(size, craterSize, craterDetails, craterCurve);
 
-        //texture = new Texture2D(127, 127, TextureFormat.RGBA32, false);
-
-        terrain.terrainData.heightmapResolution = size;
+        _terrain.terrainData.heightmapResolution = size;
 
         for (int x = 0; x < size; x++)
         {
             for (int y = 0; y < size; y++)
             {
-                heightMap[x, y] += craterMap[x, y];
-
-                //texture.SetPixel(x, y, new Color(craterMap[x, y], 0, 0, 255));
-                //texture.Apply();
+                dest[x, y] += craterMap[x, y];
             }
         }
 
-        terrain.terrainData.SetHeights(0, 0, heightMap);
+        _terrain.terrainData.SetHeights(0, 0, dest);
     }
 }
  
