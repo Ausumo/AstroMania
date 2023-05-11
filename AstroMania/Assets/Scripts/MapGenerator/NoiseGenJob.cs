@@ -7,7 +7,7 @@ using Unity.Mathematics;
 using System.Drawing;
 using UnityEngine.UIElements;
 
-public struct TerrainGenJob : IJobParallelFor
+public struct NoiseGenJob : IJobParallelFor
 {
     public int Size;
     public float Scale;
@@ -19,18 +19,12 @@ public struct TerrainGenJob : IJobParallelFor
     public NativeArray<float> HeightMap;
     public void Execute(int index)
     {
-        //float[,] noiseMapLayerOne = new float[Size, Size];
-
         var x = index / Size;
         var y = index % Size;
 
-        //float posX = (x * Scale + Offset.x);
-        //float posY = (y * Scale + Offset.y);
+        float posX = (x * Scale + Offset.x);
+        float posY = (y * Scale + Offset.y);
 
-        HeightMap[index] = Mathf.PerlinNoise(x * FreuqencX, y * FrequencY) * ScaleMutliplier;
-
-        //float height = noise.snoise(new float2(x, y) / Scale);
-        //HeightMap[index] = (height / 2  + 0.5f);
-
+        HeightMap[index] = Mathf.PerlinNoise(posX * FreuqencX, posY * FrequencY) * ScaleMutliplier;
     }
 }

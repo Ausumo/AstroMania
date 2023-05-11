@@ -20,6 +20,7 @@ public class CreateMapWindow : EditorWindow
     public AnimationCurve craterCurve2;
     public float craterSize = 20;
     public float craterDetails = 0.5f;
+    public Vector2 craterPosition;
 
     private float minLimitCrater = 0f;
     private float maxLimitCrater = 2000f;
@@ -107,13 +108,21 @@ public class CreateMapWindow : EditorWindow
         GUILayout.EndHorizontal();
         #endregion
 
+        #region Crater Position
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        craterPosition = EditorGUILayout.Vector2Field("Crater Position:", craterPosition, GUILayout.MaxWidth(175));
+        GUILayout.EndHorizontal();
+        #endregion
+
         #region Create Map Button
         EditorGUILayout.Space();
 
         GUILayout.BeginHorizontal();
         if (GUILayout.Button("Create Map", GUILayout.MaxWidth(150)))
         {
-            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, frequencX, frequencY, offset, craterCurve, craterSize, craterDetails);
+            FindObjectOfType<Map>().GenerateMap(size, scale, scaleMultiplier, frequencX, frequencY, offset, craterCurve, craterSize, craterDetails, craterPosition);
         }
         GUILayout.EndHorizontal();
         #endregion

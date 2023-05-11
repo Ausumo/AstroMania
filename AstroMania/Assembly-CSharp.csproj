@@ -59,6 +59,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\SaveAndLoad\SaveManager.cs" />
+    <Compile Include="Assets\Scripts\MapGenerator\CraterGenJob.cs" />
     <Compile Include="Assets\Scripts\Menu\SaveData.cs" />
     <Compile Include="Assets\Scripts\Menu\PostProcessingManager.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_TextEventHandler.cs" />
@@ -80,7 +81,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark01.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TextMeshSpawner.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\Benchmark02.cs" />
-    <Compile Include="Assets\Scripts\MapGenerator\TerrainGenJob.cs" />
     <Compile Include="Assets\Scripts\World\RotateTextToPlayer.cs" />
     <Compile Include="Assets\Scripts\World\FuelStones.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\CameraController.cs" />
@@ -91,6 +91,8 @@
     <Compile Include="Assets\Scripts\SaveAndLoad\Model\SaveGame.cs" />
     <Compile Include="Assets\Scripts\Player\FuelSystem.cs" />
     <Compile Include="Assets\Scripts\Menu\Menu.cs" />
+    <Compile Include="Assets\Scripts\MapGenerator\NativeCurve.cs" />
+    <Compile Include="Assets\Scripts\MapGenerator\NoiseGenJob.cs" />
     <Compile Include="Assets\Scripts\Player\RespiratorySystem.cs" />
     <Compile Include="Assets\Scripts\Player\AnimationEvent.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_ExampleScript_01.cs" />
@@ -100,7 +102,6 @@
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexColorCycler.cs" />
     <Compile Include="Assets\Scripts\Menu\PauseManager.cs" />
     <Compile Include="Assets\Scripts\Player\PlayerCamera.cs" />
-    <Compile Include="Assets\Scripts\MapGenerator\NoiseGenerator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\ObjectSpin.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\TMP_PhoneNumberValidator.cs" />
     <Compile Include="Assets\TextMesh Pro\Examples &amp; Extras\Scripts\VertexJitter.cs" />
