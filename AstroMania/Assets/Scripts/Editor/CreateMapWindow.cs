@@ -16,7 +16,7 @@ public class CreateMapWindow : EditorWindow
     public float frequencX = 0;
     public float frequencY = 0;
 
-    public AnimationCurve craterCurve;
+    public AnimationCurve craterCurve = new AnimationCurve();
     public AnimationCurve craterCurve2;
     public float craterSize = 20;
     public float craterDetails = 0.5f;

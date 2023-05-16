@@ -1,102 +1,43 @@
-using System;
-using System.Runtime.CompilerServices;
-using UnityEngine;
 using Unity.Collections;
-using static Unity.Mathematics.math;
+using Unity.Mathematics;
+using UnityEngine;
 
-public struct NativeCurve : IDisposable
+public struct NativeCurve : System.IDisposable
 {
-    public bool IsCreated => values.IsCreated;
-
-    private NativeArray<float> values;
-    private WrapMode preWrapMode;
-    private WrapMode postWrapMode;
-
-    private void InitializeValues(int count)
+    NativeArray<float> sampledFloat;
+    /// <param name="samples">Must be 2 or higher</param>
+    public NativeCurve(AnimationCurve ac, int samples)
     {
-        if (values.IsCreated)
-            values.Dispose();
+        sampledFloat = new NativeArray<float>(samples, Allocator.Persistent);
+        float timeFrom = ac.keys[0].time;
+        float timeTo = ac.keys[ac.keys.Length - 1].time;
+        float timeStep = (timeTo - timeFrom) / (samples - 1);
 
-        values = new NativeArray<float>(count, Allocator.Persistent, NativeArrayOptions.UninitializedMemory);
-    }
-
-    public void Update(AnimationCurve curve, int resolution)
-    {
-        if (curve == null)
-            throw new NullReferenceException("Animation curve is null.");
-
-        preWrapMode = curve.preWrapMode;
-        postWrapMode = curve.postWrapMode;
-
-        if (!values.IsCreated || values.Length != resolution)
-            InitializeValues(resolution);
-
-        for (int i = 0; i < resolution; i++)
-            values[i] = curve.Evaluate((float)i / (float)resolution);
-    }
-
-    public float Evaluate(float t)
-    {
-        var count = values.Length;
-
-        if (count == 1)
-            return values[0];
-
-        if (t < 0f)
+        for (int i = 0; i < samples; i++)
         {
-            switch (preWrapMode)
-            {
-                default:
-                    return values[0];
-                case WrapMode.Loop:
-                    t = 1f - (abs(t) % 1f);
-                    break;
-                case WrapMode.PingPong:
-                    t = pingpong(t, 1f);
-                    break;
-            }
+            sampledFloat[i] = ac.Evaluate(timeFrom + (i * timeStep));
         }
-        else if (t > 1f)
-        {
-            switch (postWrapMode)
-            {
-                default:
-                    return values[count - 1];
-                case WrapMode.Loop:
-                    t %= 1f;
-                    break;
-                case WrapMode.PingPong:
-                    t = pingpong(t, 1f);
-                    break;
-            }
-        }
-
-        var it = t * (count - 1);
-
-        var lower = (int)it;
-        var upper = lower + 1;
-        if (upper >= count)
-            upper = count - 1;
-
-        return lerp(values[lower], values[upper], it - lower);
     }
 
     public void Dispose()
     {
-        if (values.IsCreated)
-            values.Dispose();
+        sampledFloat.Dispose();
     }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private float repeat(float t, float length)
+    /// <param name="time">Must be from 0 to 1</param>
+    public float EvaluateLerp(float time)
     {
-        return clamp(t - floor(t / length) * length, 0, length);
-    }
+        int len = sampledFloat.Length - 1;
+        float clamp01 = time < 0 ? 0 : (time > 1 ? 1 : time);
+        float floatIndex = (clamp01 * len);
+        int floorIndex = (int)math.floor(floatIndex);
+        if (floorIndex == len)
+        {
+            return sampledFloat[len];
+        }
 
-    [MethodImpl(MethodImplOptions.AggressiveInlining)]
-    private float pingpong(float t, float length)
-    {
-        t = repeat(t, length * 2f);
-        return length - abs(t - length);
+        float lowerValue = sampledFloat[floorIndex];
+        float higherValue = sampledFloat[floorIndex + 1];
+        return math.lerp(lowerValue, higherValue, math.frac(floatIndex));
     }
 }
