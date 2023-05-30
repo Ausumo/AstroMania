@@ -1,7 +1,9 @@
+using Unity.Burst;
 using Unity.Collections;
 using Unity.Mathematics;
 using UnityEngine;
 
+[BurstCompile]
 public struct NativeCurve : System.IDisposable
 {
     NativeArray<float> sampledFloat;

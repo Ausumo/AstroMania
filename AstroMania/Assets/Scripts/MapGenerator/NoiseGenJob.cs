@@ -6,17 +6,21 @@ using Unity.Collections;
 using Unity.Mathematics;
 using System.Drawing;
 using UnityEngine.UIElements;
+using Unity.Burst;
 
+[BurstCompile]
 public struct NoiseGenJob : IJobParallelFor
 {
-    public int Size;
-    public float Scale;
-    public float ScaleMutliplier;
-    public float FreuqencX;
-    public float FrequencY;
-    public Vector2 Offset;
+    [ReadOnly] public int Size;
+    [ReadOnly] public float Scale;
+    [ReadOnly] public float ScaleMutliplier;
+    [ReadOnly] public float FreuqencX;
+    [ReadOnly] public float FrequencY;
+    [ReadOnly] public Vector2 Offset;
 
-    public NativeArray<float> HeightMap;
+    [WriteOnly] public NativeArray<float> HeightMap;
+
+    [BurstCompile]
     public void Execute(int index)
     {
         var x = index / Size;
