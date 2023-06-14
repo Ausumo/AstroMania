@@ -2,6 +2,11 @@ using Unity.Collections;
 using UnityEngine;
 using Unity.Jobs;
 using System;
+using UnityEngine.Experimental.Rendering.RenderGraphModule;
+using System.Drawing;
+using Unity.Mathematics;
+using Unity.VisualScripting.Dependencies.Sqlite;
+using static UnityEditor.Experimental.GraphView.GraphView;
 
 public class Map : MonoBehaviour
 {
@@ -12,8 +17,8 @@ public class Map : MonoBehaviour
     [SerializeField]
     private Terrain _terrain;
 
-    //public Texture2D texture;
-
+    private float[,,] _myAlphamap;
+    private float angle;
 
     /// <summary>
     /// Set the Size, Heights and Maps to the Terrain
@@ -32,6 +37,8 @@ public class Map : MonoBehaviour
 
 
         int terrainSize = _terrain.terrainData.heightmapResolution;
+        var alphamapWidth = _terrain.terrainData.alphamapWidth;
+        var alphamapHeight = _terrain.terrainData.alphamapHeight;
 
         NativeCurve test = new NativeCurve(craterCurve, 200);
        
@@ -40,6 +47,9 @@ public class Map : MonoBehaviour
         float[,] noiseDest = NoiseMapJob(terrainSize, size, scale, scaleMultiplier, frequencX, frequencY, offset);
         
         float[,] craterDest = CraterMapJob(terrainSize, size, test, craterSize, randomizeCraterDetails, craterPosition);
+
+        //float[,,] textureDest = AlphamapJob(alphamapWidth, alphamapHeight, 2, )
+
 
         _terrain.terrainData.heightmapResolution = size;
 
@@ -52,9 +62,31 @@ public class Map : MonoBehaviour
         }
 
         _terrain.terrainData.SetHeights(0, 0, noiseDest);
+
+        //Texture
+
+
+        float[,,] _alphamap = new float[alphamapWidth, alphamapHeight, 2];
+
+        for (int y = 0; y < alphamapHeight; y++)
+        {
+            for (int x = 0; x < alphamapWidth; x++)
+            {
+                float normX = x * 1.0f / (alphamapWidth - 1);
+                float normY = y * 1.0f / (alphamapHeight - 1);
+                var angle = _terrain.terrainData.GetSteepness(normX, normY);
+
+                var frac = angle / 90.0;
+                _alphamap[x, y, 0] = (float)frac;
+                _alphamap[x, y, 1] = (float)(1 - frac);
+            }
+        }
+
+        _terrain.terrainData.SetAlphamaps(0, 0, _alphamap);
+
     }
 
-
+    #region NoiseMapJob
     //Start and Running the NoiseMap Generator Job
     private float[,] NoiseMapJob(int terrainSize, int size, float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset)
     {
@@ -84,7 +116,9 @@ public class Map : MonoBehaviour
 
         return noiseDest;
     }
+    #endregion
 
+    #region CraterMapJob
     //Start and Running the CraterMap Generator Job
     private float[,] CraterMapJob(int terrainSize, int size, NativeCurve craterCurve, float craterSize, float randomizeCraterDetails, Vector2 position)
     {
@@ -113,5 +147,16 @@ public class Map : MonoBehaviour
 
         return craterDest;
     }
+    #endregion
+
+    //public float [,,] AlphamapJob(int alphamapWidth, int alphamapHeight, int layers)
+    //{
+    //    var alphamap = new NativeArray<float3>(alphamapWidth * alphamapHeight, Allocator.Persistent);
+
+
+
+    //    return 
+    //}
+
 }
- 
+
