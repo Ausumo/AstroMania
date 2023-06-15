@@ -2,11 +2,8 @@ using Unity.Collections;
 using UnityEngine;
 using Unity.Jobs;
 using System;
-using UnityEngine.Experimental.Rendering.RenderGraphModule;
-using System.Drawing;
 using Unity.Mathematics;
-using Unity.VisualScripting.Dependencies.Sqlite;
-using static UnityEditor.Experimental.GraphView.GraphView;
+using Unity.VisualScripting;
 
 public class Map : MonoBehaviour
 {
@@ -17,8 +14,6 @@ public class Map : MonoBehaviour
     [SerializeField]
     private Terrain _terrain;
 
-    private float[,,] _myAlphamap;
-    private float angle;
 
     /// <summary>
     /// Set the Size, Heights and Maps to the Terrain
@@ -48,8 +43,6 @@ public class Map : MonoBehaviour
         
         float[,] craterDest = CraterMapJob(terrainSize, size, test, craterSize, randomizeCraterDetails, craterPosition);
 
-        //float[,,] textureDest = AlphamapJob(alphamapWidth, alphamapHeight, 2, )
-
 
         _terrain.terrainData.heightmapResolution = size;
 
@@ -63,9 +56,9 @@ public class Map : MonoBehaviour
 
         _terrain.terrainData.SetHeights(0, 0, noiseDest);
 
-        //Texture
 
-
+        //Texture Berechnung ohne Job System
+        #region Texture Berechnung
         float[,,] _alphamap = new float[alphamapWidth, alphamapHeight, 2];
 
         for (int y = 0; y < alphamapHeight; y++)
@@ -84,6 +77,7 @@ public class Map : MonoBehaviour
 
         _terrain.terrainData.SetAlphamaps(0, 0, _alphamap);
 
+        #endregion
     }
 
     #region NoiseMapJob
@@ -129,7 +123,7 @@ public class Map : MonoBehaviour
             CraterSize = craterSize,
             CraterCurve = craterCurve,
             RandomizeCraterDetails = randomizeCraterDetails,
-            position = position,
+            Position = position,
 
             CraterMap = crater
         };
@@ -148,15 +142,6 @@ public class Map : MonoBehaviour
         return craterDest;
     }
     #endregion
-
-    //public float [,,] AlphamapJob(int alphamapWidth, int alphamapHeight, int layers)
-    //{
-    //    var alphamap = new NativeArray<float3>(alphamapWidth * alphamapHeight, Allocator.Persistent);
-
-
-
-    //    return 
-    //}
 
 }
 

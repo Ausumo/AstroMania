@@ -14,7 +14,7 @@ public struct CraterGenJob : IJobParallelFor
     [ReadOnly] public float CraterSize;
     [ReadOnly] public float RandomizeCraterDetails;
     [ReadOnly] public NativeCurve CraterCurve;
-    [ReadOnly] public Vector2 position;
+    [ReadOnly] public Vector2 Position;
 
     [WriteOnly] public NativeArray<float> CraterMap;
 
@@ -26,9 +26,9 @@ public struct CraterGenJob : IJobParallelFor
 
         Vector2 center = new Vector2(Size * 0.5f, Size * 0.5f);
 
-        if (position != Vector2.zero)
+        if (Position != Vector2.zero)
         {
-            center = position;
+            center = Position;
         }
 
         //calculate the middle
