@@ -1,8 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEditor;
-using Unity.VisualScripting.ReorderableList;
 
 public class CreateMapWindow : EditorWindow
 {
@@ -21,6 +18,8 @@ public class CreateMapWindow : EditorWindow
     public float craterSize = 20;
     public float craterDetails = 0.5f;
     public Vector2 craterPosition;
+
+    public int stoneIndex;
 
     private float minLimitCrater = 0f;
     private float maxLimitCrater = 2000f;
@@ -113,6 +112,14 @@ public class CreateMapWindow : EditorWindow
 
         GUILayout.BeginHorizontal();
         craterPosition = EditorGUILayout.Vector2Field("Crater Position:", craterPosition, GUILayout.MaxWidth(175));
+        GUILayout.EndHorizontal();
+        #endregion
+
+        #region Stone Spawning
+        EditorGUILayout.Space();
+
+        GUILayout.BeginHorizontal();
+        stoneIndex = EditorGUILayout.IntField("Stones:", stoneIndex, GUILayout.MaxWidth(175));
         GUILayout.EndHorizontal();
         #endregion
 

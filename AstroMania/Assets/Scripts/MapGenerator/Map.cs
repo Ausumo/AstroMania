@@ -2,8 +2,6 @@ using Unity.Collections;
 using UnityEngine;
 using Unity.Jobs;
 using System;
-using Unity.Mathematics;
-using Unity.VisualScripting;
 
 public class Map : MonoBehaviour
 {
@@ -23,7 +21,6 @@ public class Map : MonoBehaviour
     /// <param name="offset"></param>
     public void GenerateMap(int size, float scale, float scaleMultiplier, float frequencX, float frequencY, Vector2 offset, AnimationCurve craterCurve, float craterSize, float craterDetails, Vector2 craterPosition)
     {
-
         if (!_terrain.terrainData)
             return;
 
