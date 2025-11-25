@@ -1,84 +1,103 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
-using UnityEngine.SceneManagement;
 
+/// <summary>
+/// Verwaltet das Lager-Interaction-System: Öffnen/Schließen des Lager-Panels, Befüllen der Rakete und UI-Updates.
+/// Naming-Convention: private Felder beginnen mit "_" (camelCase), öffentliche Felder in camelCase.
+/// </summary>
 public class LagerSystem : MonoBehaviour
 {
+    [FormerlySerializedAs("isOnLager")]
     public bool isOnLager;
 
+    [FormerlySerializedAs("_isInteract")]
     [SerializeField] private bool _isInteract;
+
+    [FormerlySerializedAs("_stayOnLager")]
     [SerializeField] private bool _stayOnLager;
+
+    [FormerlySerializedAs("_playerTag")]
     [SerializeField] private string _playerTag;
 
+    [FormerlySerializedAs("rocketFuel")]
     public int rocketFuel;
 
+    [FormerlySerializedAs("isPlayerWin")]
     public bool isPlayerWin;
 
+    [FormerlySerializedAs("_maxRocketFuel")]
     [SerializeField] private int _maxRocketFuel = 50;
 
     private GameObject _playerGO;
 
     [Header("InputActions")]
+    [FormerlySerializedAs("_interact")]
     [SerializeField] private InputActionReference _interact;
 
     [Header("UI")]
+    [FormerlySerializedAs("_lagerPanel")]
     [SerializeField] private GameObject _lagerPanel;
+
+    [FormerlySerializedAs("_rocketFuelSlider")]
     [SerializeField] private Slider _rocketFuelSlider;
+
+    [FormerlySerializedAs("_startRocketButton")]
     [SerializeField] private Button _startRocketButton;
 
     [Header("Camera")]
+    [FormerlySerializedAs("_playerCameraController")]
     [SerializeField] private GameObject _playerCameraController;
 
     [Header("PlayerMovement")]
+    [FormerlySerializedAs("_playerMove")]
     [SerializeField] private PlayerMovement _playerMove;
 
     private bool _isPaused;
 
-
     private void Start()
     {
-        _startRocketButton.interactable = false;
-        _lagerPanel.SetActive(false);
+        if (_startRocketButton != null)
+            _startRocketButton.interactable = false;
+
+        if (_lagerPanel != null)
+            _lagerPanel.SetActive(false);
     }
 
     private void Update()
     {
+        // Input für Interact abfragen
         OnInteract();
 
+        // Lager öffnen, wenn Bedingungen erfüllt
         OpenLager();
     }
 
     /// <summary>
-    /// Wird benötigt um den Imput für das Interact abzufangen
+    /// Liest die Interact-InputAction (Analogwert oder Button)
     /// </summary>
     private void OnInteract()
     {
-        float interact = _interact.action.ReadValue<float>();
+        if (_interact == null) return;
 
-        if (interact > 0)
-            _isInteract = true;
-        else
-        {
-            _isInteract = false;
-        }
+        float interact = _interact.action.ReadValue<float>();
+        _isInteract = interact > 0f;
     }
 
-    private void OnTriggerStay(Collider collision)
+    private void OnTriggerStay(Collider other)
     {
-        if(collision.gameObject.tag == _playerTag)
+        // Verwendung von CompareTag ist effizienter
+        if (other.CompareTag(_playerTag))
         {
-            _playerGO = collision.gameObject;
+            _playerGO = other.gameObject;
             _stayOnLager = true;
         }
     }
 
-    private void OnTriggerExit(Collider collision)
+    private void OnTriggerExit(Collider other)
     {
-        if (collision.gameObject.tag == _playerTag)
+        if (other.CompareTag(_playerTag))
         {
             _stayOnLager = false;
             _playerGO = null;
@@ -87,30 +106,34 @@ public class LagerSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Öfnnet das Lager wenn 2 Werte boolisch auf true gesetzt sind (_isOnLager && _isInteract)
+    /// Öffnet das Lagerpanel, wenn der Spieler auf dem Lager ist und Interact drückt.
+    /// Versteckt die Spieler-Kamera, deaktiviert PlayerMovement und setzt UI.
     /// </summary>
     private void OpenLager()
     {
-        _isPaused = FindObjectOfType<PauseManager>().GetComponent<PauseManager>().isPaused;
+        var pauseManager = FindObjectOfType<PauseManager>();
+        _isPaused = pauseManager != null && pauseManager.isPaused;
 
-        if(!_isPaused )
+        if (!_isPaused)
         {
-            if (_stayOnLager && _isInteract)
+            if (_stayOnLager && _isInteract && _playerGO != null)
             {
-                _lagerPanel.GetComponent<Menu>().SelectFirstButton();
+                var menu = _lagerPanel?.GetComponent<Menu>();
+                menu?.SelectFirstButton();
 
-                //Resetet die Lunge bzw. befüllt die Luftflaschen wieder
-                _playerGO.GetComponent<RespiratorySystem>().ResetLungVolume();
+                // Reset der Lungen-/Sauerstoffanzeige des Spielers
+                var respiratory = _playerGO.GetComponent<RespiratorySystem>();
+                respiratory?.ResetLungVolume();
 
-                //Lager Panel aktiv
+                // Lager Panel aktivieren und UI anpassen
                 isOnLager = true;
-                _lagerPanel.SetActive(true);
+                _lagerPanel?.SetActive(true);
                 Cursor.lockState = CursorLockMode.None;
                 Cursor.visible = true;
-                _playerCameraController.SetActive(false);
-                _playerMove.enabled = false;
+                if (_playerCameraController != null) _playerCameraController.SetActive(false);
+                if (_playerMove != null) _playerMove.enabled = false;
 
-                if(rocketFuel == _maxRocketFuel)
+                if (rocketFuel == _maxRocketFuel && _startRocketButton != null)
                 {
                     _startRocketButton.interactable = true;
                 }
@@ -119,7 +142,7 @@ public class LagerSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Wrrd vom Button ausgeführt zum schließen des Lagers
+    /// Wird vom Button aufgerufen, um das Lager zu schließen.
     /// </summary>
     public void Close()
     {
@@ -127,44 +150,48 @@ public class LagerSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Schliesst das Lager beim entfernen des Spielers aus dem collider 
+    /// Schließt das Lager: Panel deaktivieren, Spieler wieder aktivieren.
     /// </summary>
     private void CloseLager()
     {
-        //Lager Panel inaktiv
         isOnLager = false;
         _stayOnLager = false;
-        _lagerPanel.SetActive(false);
+
+        if (_lagerPanel != null) _lagerPanel.SetActive(false);
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        _playerCameraController.SetActive(true);
-        _playerMove.enabled = true;
+        if (_playerCameraController != null) _playerCameraController.SetActive(true);
+        if (_playerMove != null) _playerMove.enabled = true;
     }
 
     /// <summary>
-    /// Befüllt die Rackete mit dem Wert den der Spieler gesammelt hat
+    /// Befüllt die Rakete mit dem Fuel des Spielers und leert das Inventar des Spielers.
     /// </summary>
     public void FillRocket()
     {
-        int playerFuel = _playerGO.GetComponent<FuelSystem>().playerFuel;
+        if (_playerGO == null) return;
 
+        var fuelSystem = _playerGO.GetComponent<FuelSystem>();
+        if (fuelSystem == null) return;
+
+        int playerFuel = fuelSystem.playerFuel;
         AddRocketFuel(playerFuel);
-
-        _playerGO.GetComponent<FuelSystem>().ResetPlayerFuel();
+        fuelSystem.ResetPlayerFuel();
     }
 
     /// <summary>
-    /// Updatet den Slider der Fuel von der Rocket
+    /// Aktualisiert den Rocket-Fuel-Slider.
     /// </summary>
     public void UpdateRocketFuelSlider()
     {
-        _rocketFuelSlider.value = rocketFuel;
+        if (_rocketFuelSlider != null)
+            _rocketFuelSlider.value = rocketFuel;
     }
 
     /// <summary>
-    /// Added Fuel zum Rocket Inventory
+    /// Fügt Fuel zur Rakete hinzu und aktualisiert UI.
     /// </summary>
-    /// <param name="playerFuel"></param>
     private void AddRocketFuel(int playerFuel)
     {
         this.rocketFuel += playerFuel;
@@ -178,24 +205,21 @@ public class LagerSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Setzt den gespeicherten Wert zum Win auf True um beim Laden nicht wieder den Button zu aktivieren
+    /// Startet die Rakete (setzt Win-Flag). Weitere Logik kann extern implementiert werden.
     /// </summary>
     public void StartRocket()
     {
         isPlayerWin = true;
     }
 
-
-    /// <summary>
-    /// Interactions Enable and Disable
-    /// </summary>
+    // InputActions aktivieren / deaktivieren
     private void OnEnable()
     {
-        _interact.action.Enable();
+        if (_interact != null) _interact.action.Enable();
     }
 
     private void OnDisable()
     {
-        _interact.action.Disable();
+        if (_interact != null) _interact.action.Disable();
     }
 }

@@ -1,15 +1,21 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
+/// <summary>
+/// Verwalten des Player-Fuel-Inventars und Aktualisierung der zugehörigen UI.
+/// Naming-Convention: private Felder beginnen mit "_" (camelCase), öffentliche Felder in camelCase.
+/// </summary>
 public class FuelSystem : MonoBehaviour
 {
+    [FormerlySerializedAs("playerFuel")]
     public int playerFuel;
 
+    [FormerlySerializedAs("_maxFuel")]
     [SerializeField]
     private int _maxFuel = 10;
 
+    [FormerlySerializedAs("_playerFuelSlider")]
     [SerializeField]
     private Slider _playerFuelSlider;
 
@@ -19,29 +25,30 @@ public class FuelSystem : MonoBehaviour
     }
 
     /// <summary>
-    /// Update the Player Fuel Slider
+    /// Aktualisiert den Slider mit dem aktuellen Fuel-Wert.
     /// </summary>
     public void UpdatePlayerFuelSlider()
     {
-        _playerFuelSlider.value = playerFuel;
+        if (_playerFuelSlider != null)
+            _playerFuelSlider.value = playerFuel;
     }
 
     /// <summary>
-    /// Added Fuel zum Player Inventory
+    /// Fügt Fuel zum Spieler-Inventar hinzu und aktualisiert die Anzeige.
     /// </summary>
-    /// <param name="playerFuel"></param>
-    public void AddPlayerFuel(int playerFuel)
+    /// <param name="amount">Menge an Fuel, die hinzugefügt wird.</param>
+    public void AddPlayerFuel(int amount)
     {
-        this.playerFuel += playerFuel;
+        playerFuel += amount;
         UpdatePlayerFuelSlider();
     }
 
     /// <summary>
-    /// Setzt den PlayerFuel wieder auf 0 um die anzeige Upzudaten das sie leer ist
+    /// Setzt den Fuel-Wert des Spielers auf 0 und aktualisiert die Anzeige.
     /// </summary>
     public void ResetPlayerFuel()
     {
-        this.playerFuel = 0;
+        playerFuel = 0;
         UpdatePlayerFuelSlider();
     }
 }
