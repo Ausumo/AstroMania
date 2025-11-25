@@ -66,6 +66,7 @@
     <Compile Include="Assets\Scripts\CutsceneManager.cs" />
     <Compile Include="Assets\Scripts\Menu\MainMenu.cs" />
     <Compile Include="Assets\Scripts\SaveAndLoad\SceneLoader.cs" />
+    <Compile Include="Assets\Scripts\World\FootstepDeformer.cs" />
     <Compile Include="Assets\Scripts\Menu\OptionsMenu.cs" />
     <Compile Include="Assets\Scripts\Player\FuelSystem.cs" />
     <Compile Include="Assets\Scripts\Player\AnimationEvent.cs" />

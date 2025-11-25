@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     [FormerlySerializedAs("_playerHeight")]
     [SerializeField] private float _playerHeight;
 
-    // Öffentlichkeit, damit andere Systeme den Grounded-Status abfragen können
+    // Public so other systems can query the grounded status
     [FormerlySerializedAs("isGrounded")]
     public bool isGrounded;
 
@@ -24,15 +24,19 @@ public class PlayerMovement : MonoBehaviour
     [FormerlySerializedAs("_airSpeed")]
     [SerializeField] private float _airSpeed;
 
-    // Laufender Speed-Wert (wird zur Laufzeit gesetzt)
+    [Header("Footstep Impact")]
+    [Tooltip("Minimum vertical velocity (m/s) required to register a landing/impact for deformation")] 
+    [SerializeField] private float _minImpactVelocity = 1.0f;
+
+    // Current speed value (set at runtime)
     private float _speed;
 
-    // Eingabevektor (x = seitlich, z = vor/zurück)
+    // Input vector (x = sideways, z = forward/back)
     private Vector3 _move;
 
     private Rigidbody _rb;
 
-    // Bewegungsrichtung relativ zur Kamera
+    // Movement direction relative to the camera
     private Vector3 _moveDirection;
 
     [Header("InputActions")]
@@ -46,34 +50,105 @@ public class PlayerMovement : MonoBehaviour
     [FormerlySerializedAs("_animator")]
     [SerializeField] private Animator _animator;
 
-    // temporäre Richtung basierend auf Kamera
+    [Header("Footsteps")]
+    [FormerlySerializedAs("_footstepDeformer")]
+    [SerializeField] private FootstepDeformer _footstepDeformer;
+
+    // Temporary direction based on the camera
     private Vector3 _direction;
+
+    // Track previous grounded state to detect landings
+    private bool _wasGrounded;
+
+    // track last vertical velocity to estimate impact on landing
+    private float _lastVerticalVelocity;
 
     private void Start()
     {
-        // Rigidbody einmalig holen
+        // Cache Rigidbody reference
         _rb = GetComponent<Rigidbody>();
+
+        // Initialize grounded state
+        _wasGrounded = IsGrounded();
+        _lastVerticalVelocity = 0f;
     }
 
     private void Update()
     {
-        // Input und Sprung werden in Update erfasst
+        // Update grounded state early so landing can be detected here
+        bool currentlyGrounded = IsGrounded();
+
+        // Detect landing transition (was not grounded, now grounded)
+        if (currentlyGrounded && !_wasGrounded)
+        {
+            // Use last recorded vertical velocity (from physics) to estimate impact
+            float impactForce = 0f;
+            if (_rb != null)
+            {
+                if (Mathf.Abs(_lastVerticalVelocity) >= _minImpactVelocity)
+                {
+                    impactForce = _rb.mass * Mathf.Abs(_lastVerticalVelocity);
+                }
+            }
+
+            // Trigger footstep deformation at player's position only if significant impact
+            if (impactForce > 0f && _footstepDeformer != null)
+            {
+                _footstepDeformer.TriggerStepAtPosition(transform.position, impactForce);
+            }
+        }
+
+        // Read input and handle jump in Update
         InputMove();
         Jump();
 
-        // Animationen basierend auf aktuellem Zustand aktualisieren
+        // Update animations based on current state
         ManageAnimation();
+
+        // store for next frame
+        _wasGrounded = currentlyGrounded;
     }
 
     private void FixedUpdate()
     {
-        // Physikbasierte Bewegungsberechnung
+        // Record vertical velocity at the start of physics step (used for landing impact)
+        if (_rb != null)
+            _lastVerticalVelocity = _rb.velocity.y;
+
+        // Physics-based movement calculations
         FindDirection();
         Move();
     }
 
     /// <summary>
-    /// Liest die Movement-InputAction und setzt die aktuelle Geschwindigkeit (am Boden)
+    /// Called when the Rigidbody collides with another collider. Use collision to reliably detect landings.
+    /// </summary>
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (_footstepDeformer == null || _rb == null) return;
+
+        // iterate contacts to find a mostly-upward normal (ground contact)
+        foreach (var contact in collision.contacts)
+        {
+            // consider this a landing if the contact normal points sufficiently upward
+            if (Vector3.Dot(contact.normal, Vector3.up) > 0.5f)
+            {
+                // impact velocity relative to collision
+                float impactVel = collision.relativeVelocity.y;
+
+                // only consider as impact if vertical speed exceeds threshold
+                if (Mathf.Abs(impactVel) < _minImpactVelocity) continue;
+
+                float impactForce = _rb.mass * Mathf.Abs(impactVel);
+
+                _footstepDeformer.TriggerStepAtPosition(contact.point, impactForce);
+                break;
+            }
+        }
+    }
+
+    /// <summary>
+    /// Reads the movement InputAction and sets the current speed (when grounded)
     /// </summary>
     private void InputMove()
     {
@@ -86,53 +161,56 @@ public class PlayerMovement : MonoBehaviour
     }
 
     /// <summary>
-    /// Berechnet die Bewegungsrichtung relativ zur Kamera (forward und right)
+    /// Calculates movement direction relative to the camera (forward and right)
     /// </summary>
     private void FindDirection()
     {
-        // Richtung von Kamera zu Spieler (y wird ignoriert)
+        // Direction from camera to player (ignore Y)
+        if (Camera.main == null) return;
         _direction = transform.position - Camera.main.transform.position;
         _direction.y = 0;
         _direction = _direction.normalized;
 
-        // Kombination aus forward (z) und right (x)
+        // Combine forward (z) and right (x)
         _moveDirection = _direction * _move.z + ((Quaternion.AngleAxis(90, Vector3.up) * _direction) * _move.x);
     }
 
     /// <summary>
-    /// Führt die eigentliche Bewegung durch. Unterscheidung zwischen Boden- und Luftbewegung.
+    /// Performs the actual movement. Differentiates between grounded and air movement.
     /// </summary>
     private void Move()
     {
+        if (_rb == null) return;
+
         if (isGrounded)
         {
-            var _rbvelocityY = _rb.linearVelocity.y;
-            var _directionVec = _speed * _moveDirection.normalized;
+            var rbVelocityY = _rb.velocity.y;
+            var directionVec = _speed * _moveDirection.normalized;
 
-            _directionVec.y = _rbvelocityY;
-            _rb.linearVelocity = _directionVec;
+            directionVec.y = rbVelocityY;
+            _rb.velocity = directionVec;
         }
         else
         {
-            var _rbvelocity = _rb.linearVelocity;
-            var _rbvelocityY = _rb.linearVelocity.y;
+            var rbvelocity = _rb.velocity;
+            var rbvelocityY = _rb.velocity.y;
 
-            // nur horizontale Komponente beeinflussen
-            _rbvelocity.y = 0;
-            _rbvelocity += _speed * _moveDirection.normalized * 0.02f;
-            float _rbSpeed = _rbvelocity.magnitude;
+            // Only affect horizontal component
+            rbvelocity.y = 0;
+            rbvelocity += _speed * _moveDirection.normalized * 0.02f;
+            float rbSpeed = rbvelocity.magnitude;
 
-            // Solange Luftgeschwindigkeit kleiner als Limit, Geschwindigkeit setzen
-            if (_rbSpeed < _airSpeed)
+            // While air speed is below limit, apply velocity
+            if (rbSpeed < _airSpeed)
             {
-                _rbvelocity.y = _rbvelocityY;
-                _rb.linearVelocity = _rbvelocity;
+                rbvelocity.y = rbvelocityY;
+                _rb.velocity = rbvelocity;
             }
         }
     }
 
     /// <summary>
-    /// Verarbeitet Sprung-Input. Nur wenn Spieler am Boden ist.
+    /// Processes jump input. Only when player is grounded.
     /// </summary>
     private void Jump()
     {
@@ -143,26 +221,32 @@ public class PlayerMovement : MonoBehaviour
             if (isJumping)
             {
                 AudioManager.Instance.PlaySound("Jump");
-                _rb.AddForce(_jumpSpeed * Vector3.up, ForceMode.Force);
+                if (_rb != null) _rb.AddForce(_jumpSpeed * Vector3.up, ForceMode.Force);
             }
         }
     }
 
     /// <summary>
-    /// Prüft per Raycast, ob der Spieler den Boden berührt.
+    /// Checks via Raycast whether the player is touching the ground.
     /// </summary>
-    /// <returns>True, wenn grounded</returns>
+    /// <returns>True when grounded</returns>
     private bool IsGrounded()
     {
-        isGrounded = Physics.Raycast(transform.position, Vector3.down, (float)_playerHeight);
+        // Raycast a little below the transform to be robust against small offsets
+        float originOffset = 0.1f;
+        Vector3 origin = transform.position + Vector3.up * originOffset;
+        float distance = _playerHeight + originOffset;
+        isGrounded = Physics.Raycast(origin, Vector3.down, distance);
         return isGrounded;
     }
 
     /// <summary>
-    /// Aktualisiert Animator-Parameter basierend auf Bewegung und Grounded-State.
+    /// Updates animator parameters based on movement and grounded state.
     /// </summary>
     private void ManageAnimation()
     {
+        if (_animator == null) return;
+
         if (isGrounded)
         {
             _animator.SetBool("isJumping", false);
@@ -180,7 +264,7 @@ public class PlayerMovement : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + (_moveDirection * 4));
     }
 
-    // InputActions aktivieren / deaktivieren
+    // Enable / disable InputActions
     private void OnEnable()
     {
         _movement.action.Enable();
