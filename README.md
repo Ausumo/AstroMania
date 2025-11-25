@@ -2,6 +2,7 @@ Astro Mania 🌌
 Astro Mania was my very first project created with Unity, and also the first game I fully finished and released.
 
 Play it now: https://riftstonegames.itch.io/astromania
+
 Concept ✨
 You find yourself stranded in a crater on an unknown planet. Your mission is to collect fuel by extracting it from nearby stones
 scattered across the environment.
